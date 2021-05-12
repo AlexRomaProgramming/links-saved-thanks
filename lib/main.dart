@@ -1,0 +1,14 @@
+import 'package:flutter/material.dart';
+import 'package:links_saved_thanks/pages/home_page.dart';
+
+void main() => runApp(MyApp());
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+        title: 'Links Saved Thanks',
+        debugShowCheckedModeBanner: false,
+        home: HomePage());
+  }
+}

@@ -9,16 +9,16 @@ Future<LinkInfoModel> fetchLinkInfo(String url) async {
 
   if (response.statusCode == 200) {
     final document = parse(response.body);
-    return _createLinkObjectFromDocument(document);
+    return _createLinkObjectFromDocument(document, url);
   } else {
     print('Invalid response from http !!!');
     //TODO: handle invalid response from http
-    return LinkInfoModel();
+    return LinkInfoModel(date: DateTime.now());
   }
 }
 
 //Generate a model object (LinkInfoModel) from document (html)
-LinkInfoModel _createLinkObjectFromDocument(Document document) {
+LinkInfoModel _createLinkObjectFromDocument(Document document, String linkUrl) {
   //all elements with 'meta' tag
   final metaElements = document.getElementsByTagName('meta');
 
@@ -82,10 +82,11 @@ LinkInfoModel _createLinkObjectFromDocument(Document document) {
 
   //all data in one object
   final linkInfoModel = LinkInfoModel(
+    url: linkUrl,
+    date: DateTime.now(),
     title: title ?? '',
     description: description ?? '',
-    image: image ??
-        'https://st3.depositphotos.com/23594922/31822/v/600/depositphotos_318221368-stock-illustration-missing-picture-page-for-website.jpg',
+    image: image ?? 'no_image',
   );
 
   return linkInfoModel;

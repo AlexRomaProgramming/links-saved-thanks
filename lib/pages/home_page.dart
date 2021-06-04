@@ -2,9 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+import 'package:get/get.dart';
+import 'package:receive_sharing_intent/receive_sharing_intent.dart';
+
+import 'package:links_saved_thanks/controllers/storage_controller.dart';
 import 'package:links_saved_thanks/helpers/functions.dart';
 import 'package:links_saved_thanks/models/link_info_model.dart';
-import 'package:receive_sharing_intent/receive_sharing_intent.dart';
+import 'package:links_saved_thanks/widgets/linkCard.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -24,6 +28,7 @@ class _HomePageState extends State<HomePage> {
         ReceiveSharingIntent.getTextStream().listen((String value) {
       setState(() {
         _sharedText = value;
+
         print("Shared: $_sharedText");
       });
     }, onError: (err) {
@@ -34,6 +39,7 @@ class _HomePageState extends State<HomePage> {
     ReceiveSharingIntent.getInitialText().then((String? value) {
       setState(() {
         _sharedText = value;
+
         print("Shared: $_sharedText");
       });
     });
@@ -47,6 +53,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final StorageController storageController = Get.put(StorageController());
     if (_sharedText != null && _sharedText != '') {
       return Scaffold(
         body: FutureBuilder(
@@ -56,12 +63,25 @@ class _HomePageState extends State<HomePage> {
             if (snapshot.hasData) {
               return Column(
                 children: [
-                  SizedBox(height: 40),
-                  Image.network(snapshot.data!.image),
-                  SizedBox(height: 10),
-                  Text(snapshot.data!.title),
-                  SizedBox(height: 10),
-                  Text(snapshot.data!.description)
+                  LinkCard(dataFetched: snapshot.data),
+                  Row(
+                    children: [
+                      FloatingActionButton(
+                          onPressed: () {
+                            storageController.allLinks.add(snapshot.data!);
+                          },
+                          child: Icon(Icons.add)),
+                      FloatingActionButton(
+                        onPressed: () {
+                          storageController.allLinks.forEach((element) {
+                            print(element.title);
+                          });
+                        },
+                        child: Icon(Icons.print),
+                      )
+                    ],
+                  ),
+                  ...controlTexts(storageController)
                 ],
               );
             } else if (snapshot.hasError) {
@@ -77,5 +97,17 @@ class _HomePageState extends State<HomePage> {
         body: Center(child: Text('Sin datos !!!')),
       );
     }
+  }
+
+  List<Widget> controlTexts(StorageController controller) {
+    var list = <Widget>[];
+    if (controller.allLinks.isEmpty) {
+      list.add(Text('nada que mostrar'));
+    } else {
+      controller.allLinks.forEach((element) {
+        list.add(Text(element.title));
+      });
+    }
+    return list;
   }
 }

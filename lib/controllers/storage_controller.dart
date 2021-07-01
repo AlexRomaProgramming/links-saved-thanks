@@ -5,6 +5,15 @@ import 'package:links_saved_thanks/models/link_info_model.dart';
 class StorageController extends GetxController {
   var storedList = [];
   var allLinks = <LinkInfoModel>[].obs;
+  var bottomBarIndex = 0.obs;
+  var folderList = [
+    'default',
+    'example1',
+    'example2',
+    'default2',
+    'example3',
+    'example4'
+  ];
 
   @override
   onInit() {

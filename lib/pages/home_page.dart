@@ -3,12 +3,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:links_saved_thanks/pages/menu_page.dart';
+import 'package:links_saved_thanks/pages/card_page.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 
 import 'package:links_saved_thanks/controllers/storage_controller.dart';
-import 'package:links_saved_thanks/helpers/functions.dart';
-import 'package:links_saved_thanks/models/link_info_model.dart';
-import 'package:links_saved_thanks/widgets/linkCard.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -18,6 +17,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late StreamSubscription _intentDataStreamSubscription;
   String? _sharedText;
+  final StorageController storageController = Get.find();
 
   @override
   void initState() {
@@ -28,8 +28,9 @@ class _HomePageState extends State<HomePage> {
         ReceiveSharingIntent.getTextStream().listen((String value) {
       setState(() {
         _sharedText = value;
-
-        print("Shared: $_sharedText");
+        print("Shared when in memory: $_sharedText");
+        //return to home page, is a bottom of the Stack
+        Get.until((route) => Get.currentRoute == 'home');
       });
     }, onError: (err) {
       print("getLinkStream error: $err");
@@ -40,7 +41,7 @@ class _HomePageState extends State<HomePage> {
       setState(() {
         _sharedText = value;
 
-        print("Shared: $_sharedText");
+        print("Shared from cold: $_sharedText");
       });
     });
   }
@@ -53,61 +54,13 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final StorageController storageController = Get.put(StorageController());
     if (_sharedText != null && _sharedText != '') {
-      return Scaffold(
-        body: FutureBuilder(
-          future: fetchLinkInfo(_sharedText!),
-          builder:
-              (BuildContext context, AsyncSnapshot<LinkInfoModel> snapshot) {
-            if (snapshot.hasData) {
-              return Column(
-                children: [
-                  LinkCard(dataFetched: snapshot.data),
-                  Row(
-                    children: [
-                      FloatingActionButton(
-                          onPressed: () {
-                            storageController.allLinks.add(snapshot.data!);
-                          },
-                          child: Icon(Icons.add)),
-                      FloatingActionButton(
-                        onPressed: () {
-                          storageController.allLinks.forEach((element) {
-                            print(element.title);
-                          });
-                        },
-                        child: Icon(Icons.print),
-                      )
-                    ],
-                  ),
-                  ...controlTexts(storageController)
-                ],
-              );
-            } else if (snapshot.hasError) {
-              return Center(child: Text('Snapshot has error !!!'));
-            } else {
-              return Center(child: CircularProgressIndicator());
-            }
-          },
-        ),
-      );
+      return CardPage(
+          sharedText: _sharedText, storageController: storageController);
     } else {
-      return Scaffold(
-        body: Center(child: Text('Sin datos !!!')),
-      );
-    }
-  }
+      //TODO: When started from cold shows this screen a fraction of second, need fix
 
-  List<Widget> controlTexts(StorageController controller) {
-    var list = <Widget>[];
-    if (controller.allLinks.isEmpty) {
-      list.add(Text('nada que mostrar'));
-    } else {
-      controller.allLinks.forEach((element) {
-        list.add(Text(element.title));
-      });
+      return MenuPage(storageController.folderList);
     }
-    return list;
   }
 }

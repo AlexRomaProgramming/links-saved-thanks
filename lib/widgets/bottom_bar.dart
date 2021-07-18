@@ -26,7 +26,9 @@ class BottomBar extends StatelessWidget {
             Get.toNamed('search');
           }
         },
-        selectedItemColor: Colors.blueAccent,
+        backgroundColor: Colors.indigo.shade100,
+        selectedItemColor: Colors.indigoAccent,
+        //unselectedItemColor: Colors.white54,
         items: [
           BottomNavigationBarItem(
             icon: Icon(FontAwesomeIcons.home),

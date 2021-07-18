@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:animate_do/animate_do.dart';
+import 'package:get/get.dart';
 
 import 'package:links_saved_thanks/models/link_info_model.dart';
 
@@ -46,10 +47,11 @@ class _LinkCardState extends State<LinkCard> {
     return SafeArea(
       child: Container(
         margin: EdgeInsets.all(15),
-        height: 300,
+        height: Get.height * 0.3,
         decoration: BoxDecoration(
             color: Colors.grey[400],
-            border: Border.all(color: Colors.brown.withOpacity(0.6)),
+            border:
+                Border.all(color: Colors.blueGrey.shade300.withOpacity(0.8)),
             borderRadius: BorderRadius.circular(10)),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(10),
@@ -63,7 +65,7 @@ class _LinkCardState extends State<LinkCard> {
                     fit: BoxFit.fill)
               else
                 FadeInImage.assetNetwork(
-                    height: 300,
+                    height: Get.height * 0.36,
                     fit: BoxFit.fitHeight,
                     placeholder: 'assets/img/jar-loading.gif',
                     image: widget.dataFetched!.image),
@@ -90,8 +92,8 @@ class _LinkCardState extends State<LinkCard> {
                                 begin: Alignment.topCenter,
                                 end: Alignment.bottomCenter,
                                 colors: [
-                                  Colors.brown.withOpacity(0.2),
-                                  Colors.brown.withOpacity(0.8),
+                                  Colors.blueGrey.shade700.withOpacity(0.2),
+                                  Colors.blueGrey.shade700.withOpacity(0.8),
                                 ])),
                         child: Text(
                           widget.dataFetched!.title,

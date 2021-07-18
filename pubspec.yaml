@@ -35,6 +35,9 @@ dependencies:
   animate_do:
   get_storage:
   font_awesome_flutter:
+  sticky_headers: ^0.2.0
+  card_swiper: ^1.0.2
+
 
 dev_dependencies:
   flutter_test:

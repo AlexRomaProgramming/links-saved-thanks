@@ -17,7 +17,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   late StreamSubscription _intentDataStreamSubscription;
   String? _sharedText;
-  final StorageController storageController = Get.find();
+  final StorageController storageController = Get.put(StorageController());
 
   @override
   void initState() {
@@ -29,7 +29,7 @@ class _HomePageState extends State<HomePage> {
       setState(() {
         _sharedText = value;
         print("Shared when in memory: $_sharedText");
-        //return to home page, is a bottom of the Stack
+        //return to home page, its a bottom of the Stack
         Get.until((route) => Get.currentRoute == 'home');
       });
     }, onError: (err) {
@@ -60,7 +60,7 @@ class _HomePageState extends State<HomePage> {
     } else {
       //TODO: When started from cold shows this screen a fraction of second, need fix
 
-      return MenuPage(storageController.folderList);
+      return MenuPage();
     }
   }
 }

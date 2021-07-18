@@ -36,6 +36,13 @@ class CardPage extends StatelessWidget {
                         FloatingActionButton(
                           onPressed: () {
                             storageController.bottomBarIndex.value = 0;
+                            if (storageController
+                                .isUrlNew(snapshot.data!.url)) {
+                              storageController.allLinks.add(snapshot.data!);
+                            }
+                            storageController.allLinks.forEach((element) {
+                              print(element.title);
+                            });
                             Get.toNamed('menu');
                           },
                           child: Icon(Icons.print),

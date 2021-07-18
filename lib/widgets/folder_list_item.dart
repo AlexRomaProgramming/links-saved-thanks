@@ -8,11 +8,15 @@ class FolderListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Text(text),
+      child: Text(
+        text,
+        style: TextStyle(color: Colors.white),
+      ),
       padding: EdgeInsets.all(5),
       margin: EdgeInsets.all(10),
       decoration: BoxDecoration(
-          color: Colors.white, borderRadius: BorderRadius.circular(10)),
+          color: Colors.indigo.shade900,
+          borderRadius: BorderRadius.circular(10)),
     );
   }
 }

@@ -3,9 +3,9 @@ import 'package:get_storage/get_storage.dart';
 import 'package:links_saved_thanks/models/link_info_model.dart';
 
 class StorageController extends GetxController {
-  var storedList = [];
-  var allLinks = <LinkInfoModel>[].obs;
-  var bottomBarIndex = 0.obs;
+  var storedList = []; // auxiliar list, filled from memory storage
+  var allLinks = <LinkInfoModel>[].obs; //main list of all links
+  var bottomBarIndex = 0.obs; //which bottom bar item is activated
   var folderList = [
     'default',
     'example1',
@@ -13,7 +13,7 @@ class StorageController extends GetxController {
     'default2',
     'example3',
     'example4'
-  ];
+  ]; //list of all existing folders
 
   @override
   onInit() {
@@ -31,6 +31,15 @@ class StorageController extends GetxController {
     super.onInit();
   }
 
+  //checking if link no exist in allLinks list
+  bool isUrlNew(String urlForChecking) {
+    bool response = true;
+    allLinks.forEach((element) {
+      if (element.url == urlForChecking) response = false;
+    });
+    return response;
+  }
+
   //when close app passing LinkInfoModels to json and save it
   @override
   void onClose() {
@@ -38,4 +47,5 @@ class StorageController extends GetxController {
     GetStorage('Data').write('allLinksList', listToSave.toList());
     super.onClose();
   }
+  //TODO: when app exits with Back button remember where for restart
 }

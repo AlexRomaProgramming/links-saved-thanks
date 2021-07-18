@@ -17,7 +17,7 @@ class BackgroundWidget extends StatelessWidget {
                     fit: BoxFit.cover)),
           ),
           Container(
-            color: Colors.grey.withOpacity(0.6),
+            color: Colors.indigo.shade300.withOpacity(0.8),
           )
         ],
       ),

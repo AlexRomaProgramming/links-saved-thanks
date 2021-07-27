@@ -1,5 +1,6 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:links_saved_thanks/widgets/folder_list_item.dart';
 
 class LineOfFolders extends StatelessWidget {
@@ -17,7 +18,7 @@ class LineOfFolders extends StatelessWidget {
         delay: Duration(milliseconds: 1000),
         duration: Duration(milliseconds: 500),
         child: Container(
-          height: 50,
+          height: Get.height * 0.065,
           child: ListView.builder(
             physics: BouncingScrollPhysics(),
             scrollDirection: Axis.horizontal,

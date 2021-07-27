@@ -13,7 +13,7 @@ Future<LinkInfoModel> fetchLinkInfo(String url) async {
   } else {
     print('Invalid response from http !!!');
     //TODO: handle invalid response from http
-    return LinkInfoModel(date: DateTime.now());
+    return LinkInfoModel(date: DateTime.now(), folder: []);
   }
 }
 
@@ -82,12 +82,12 @@ LinkInfoModel _createLinkObjectFromDocument(Document document, String linkUrl) {
 
   //all data in one object
   final linkInfoModel = LinkInfoModel(
-    url: linkUrl,
-    date: DateTime.now(),
-    title: title ?? '',
-    description: description ?? '',
-    image: image ?? 'no_image',
-  );
+      url: linkUrl,
+      date: DateTime.now(),
+      title: title ?? '',
+      description: description ?? '',
+      image: image ?? 'no_image',
+      folder: []);
 
   return linkInfoModel;
 }

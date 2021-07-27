@@ -6,24 +6,28 @@ LinkInfoModel linkInfoModelFromJson(String str) =>
 String linkInfoModelToJson(LinkInfoModel data) => json.encode(data.toJson());
 
 class LinkInfoModel {
-  final String title, description, image, url;
-  DateTime date;
-  String folder;
+  LinkInfoModel({
+    this.url = '',
+    this.title = '',
+    this.description = '',
+    this.image = '',
+    required this.folder,
+    required this.date,
+  });
 
-  LinkInfoModel(
-      {this.title = '',
-      this.description = '',
-      this.image = '',
-      this.url = '',
-      this.folder = 'default',
-      required this.date});
+  String url;
+  String title;
+  String description;
+  String image;
+  List<String> folder = [];
+  DateTime date;
 
   factory LinkInfoModel.fromJson(Map<String, dynamic> json) => LinkInfoModel(
         url: json["url"],
         title: json["title"],
         description: json["description"],
         image: json["image"],
-        folder: json["folder"],
+        folder: List<String>.from(json["folder"].map((x) => x)),
         date: DateTime.parse(json["date"]),
       );
 
@@ -32,7 +36,7 @@ class LinkInfoModel {
         "title": title,
         "description": description,
         "image": image,
-        "folder": folder,
+        "folder": List<dynamic>.from(folder.map((x) => x)),
         "date": date.toIso8601String(),
       };
 }

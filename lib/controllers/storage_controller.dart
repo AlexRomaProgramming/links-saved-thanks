@@ -8,7 +8,22 @@ class StorageController extends GetxController {
   var bottomBarIndex = 0.obs; //which bottom bar item is activated
   var folderList = [
     'default',
-    'example1',
+    '3akpyto4ki kaba4ki',
+    'example2',
+    'default2',
+    'example3',
+    'default',
+    '3akpyto4ki kaba4ki',
+    'example2',
+    'default2',
+    'example3',
+    'default',
+    '3akpyto4ki kaba4ki',
+    'example2',
+    'default2',
+    'example3',
+    'default',
+    '3akpyto4ki kaba4ki',
     'example2',
     'default2',
     'example3',
@@ -31,13 +46,13 @@ class StorageController extends GetxController {
     super.onInit();
   }
 
-  //checking if link no exist in allLinks list
-  bool isUrlNew(String urlForChecking) {
-    bool response = true;
+  //checking if link no exist in allLinks list, if exists return the position
+  int positionIfUrlExists(String urlForChecking) {
+    int position = -1;
     allLinks.forEach((element) {
-      if (element.url == urlForChecking) response = false;
+      if (element.url == urlForChecking) position = allLinks.indexOf(element);
     });
-    return response;
+    return position;
   }
 
   //when close app passing LinkInfoModels to json and save it

@@ -62,11 +62,11 @@ class _LinkCardState extends State<LinkCard> {
                 Image.asset('assets/img/no-image.png',
                     width: double.infinity,
                     //height: 250,
-                    fit: BoxFit.fill)
+                    fit: BoxFit.cover)
               else
                 FadeInImage.assetNetwork(
                     height: Get.height * 0.36,
-                    fit: BoxFit.fitHeight,
+                    fit: BoxFit.cover,
                     placeholder: 'assets/img/jar-loading.gif',
                     image: widget.dataFetched!.image),
               FadeIn(

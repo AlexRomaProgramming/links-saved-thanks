@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 import 'package:links_saved_thanks/pages/home_page.dart';
+import 'package:links_saved_thanks/pages/folder_page.dart';
 import 'package:links_saved_thanks/pages/menu_page.dart';
 import 'package:links_saved_thanks/pages/new_folder_page.dart';
 import 'package:links_saved_thanks/pages/search_page.dart';
 
 void main() async {
   await GetStorage.init('Data');
-  runApp(MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations(
+          [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
+      .then((_) => runApp(MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -35,6 +41,10 @@ class MyApp extends StatelessWidget {
         GetPage(
             name: 'search',
             page: () => SearchPage(),
+            transition: Transition.fadeIn),
+        GetPage(
+            name: 'folder',
+            page: () => FolderPage(),
             transition: Transition.fadeIn),
       ],
     );

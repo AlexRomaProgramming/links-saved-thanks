@@ -50,6 +50,7 @@ class LinksListView extends StatelessWidget {
                       children: [
                         Flexible(
                           flex: 14,
+                          fit: FlexFit.tight,
                           child: Text(
                             selectedList[index].title,
                             maxLines: 2,

@@ -7,7 +7,7 @@ class BackgroundWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FadeIn(
-      duration: Duration(milliseconds: 1200),
+      duration: Duration(milliseconds: 500),
       child: Stack(
         children: [
           Container(

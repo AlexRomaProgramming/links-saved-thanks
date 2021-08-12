@@ -1,19 +1,165 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
+
 import 'package:get/get.dart';
+import 'package:animate_do/animate_do.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 import 'package:links_saved_thanks/controllers/storage_controller.dart';
 import 'package:links_saved_thanks/widgets/background.dart';
 import 'package:links_saved_thanks/widgets/bottom_bar.dart';
 
-class NewFolderPage extends StatelessWidget {
+class NewFolderPage extends StatefulWidget {
+  @override
+  State<NewFolderPage> createState() => _NewFolderPageState();
+}
+
+class _NewFolderPageState extends State<NewFolderPage> {
+  late TextEditingController _controller;
+  bool textFieldEnabled = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final StorageController storageController = Get.find();
     return Scaffold(
+      resizeToAvoidBottomInset: false, //for avoid resizing of layout
       bottomNavigationBar: BottomBar(storageController: storageController),
       body: Stack(children: [
-        BackgroundWidget(),
-        Center(child: Text('New Folder')),
+        const BackgroundWidget(),
+        FadeInRight(
+          delay: Duration(milliseconds: 500),
+          duration: Duration(milliseconds: 500),
+          child: Column(
+            children: [
+              SafeArea(
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 10),
+                  padding: EdgeInsets.all(15.0),
+                  child: Column(
+                    children: [
+                      TextField(
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 22),
+                        textAlign: TextAlign.center,
+                        enabled: textFieldEnabled,
+                        //autofocus: true,
+                        controller: _controller,
+                        cursorColor: Colors.white,
+                        decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.indigo.shade900,
+                            prefixIcon: Icon(
+                              FontAwesomeIcons.folderOpen,
+                              color: Colors.white38,
+                            ),
+                            //labelText: 'New folder',
+                            hintText: 'Enter folder name',
+                            hintStyle:
+                                TextStyle(color: Colors.white38, fontSize: 22),
+                            border: OutlineInputBorder(
+                                borderSide: BorderSide.none,
+                                borderRadius: BorderRadius.circular(30))),
+                      ),
+                      SizedBox(height: 30),
+                      OutlinedButton.icon(
+                          style: OutlinedButton.styleFrom(
+                              side: BorderSide(color: Colors.indigo.shade900),
+                              primary: Colors.limeAccent),
+                          onPressed: () {
+                            //remove keyboard
+                            FocusScope.of(context).unfocus();
+                            if (!Get.isSnackbarOpen!) {
+                              if (_controller.text.trim() == '') {
+                                _buildSnackbar(
+                                    'Error',
+                                    'Enter at least one character',
+                                    Icon(FontAwesomeIcons.exclamationCircle,
+                                        color: Colors.red));
+                              } else if (!storageController.folderList
+                                  .contains(_controller.text)) {
+                                storageController.folderList
+                                    .add(_controller.text.trim());
+                                storageController.bottomBarIndex.value = 0;
+                                Get.toNamed('menu');
+                                _buildSnackbar(
+                                    _controller.text,
+                                    'This folder was added to the list',
+                                    Icon(FontAwesomeIcons.checkCircle,
+                                        color: Colors.limeAccent));
+                              } else {
+                                _buildSnackbar(
+                                    'Error',
+                                    'The folder with this name already exists',
+                                    Icon(FontAwesomeIcons.exclamationCircle,
+                                        color: Colors.red));
+                              }
+                            }
+                          },
+                          icon: Icon(
+                            FontAwesomeIcons.fileDownload,
+                            color: Colors.indigo.shade900,
+                          ),
+                          label: Text(
+                            'Save',
+                            style: TextStyle(
+                                fontSize: 22, color: Colors.indigo.shade900),
+                          ))
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
       ]),
+    );
+  }
+
+  void _buildSnackbar(String title, String message, Icon icon) {
+    return Get.snackbar(
+      title,
+      message,
+      titleText: Text(
+        title,
+        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+      ),
+      messageText: Text(
+        message,
+        style: TextStyle(fontSize: 16),
+      ),
+      icon: icon,
+      snackPosition: SnackPosition.BOTTOM,
+      duration: Duration(seconds: 3),
+      barBlur: 12,
+      borderWidth: 2,
+      borderColor: Colors.limeAccent,
+      snackbarStatus: (status) {
+        if (status == SnackbarStatus.OPENING) {
+          setState(() {
+            textFieldEnabled = false;
+          });
+        }
+        if (status == SnackbarStatus.CLOSED) {
+          setState(() {
+            textFieldEnabled = true;
+          });
+        }
+      },
     );
   }
 }

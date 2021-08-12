@@ -11,7 +11,7 @@ class SearchPage extends StatelessWidget {
     return Scaffold(
       bottomNavigationBar: BottomBar(storageController: storageController),
       body: Stack(children: [
-        BackgroundWidget(),
+        const BackgroundWidget(),
         Center(child: Text('Searching ...')),
       ]),
     );

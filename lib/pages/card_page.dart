@@ -31,7 +31,7 @@ class CardPage extends StatelessWidget {
           if (snapshot.hasData) {
             return Stack(
               children: [
-                BackgroundWidget(),
+                const BackgroundWidget(),
                 Container(
                   margin: EdgeInsets.symmetric(vertical: 30),
                   child: Column(
@@ -39,6 +39,7 @@ class CardPage extends StatelessWidget {
                     children: [
                       GestureDetector(
                         onTap: () {
+                          storageController.bottomBarIndex.value = 0;
                           Get.toNamed('menu');
                         },
                         child: Container(
@@ -85,26 +86,10 @@ class CardPage extends StatelessWidget {
                             size: 100, color: Colors.white.withOpacity(0.3)),
                       ),
                       Spacer(),
-                      // Row(
-                      //   children: [
-                      //     FloatingActionButton(
-                      //       onPressed: () {
-                      //         storageController.bottomBarIndex.value = 0;
-                      //         if (storageController
-                      //             .isUrlNew(snapshot.data!.url)) {
-                      //           LinkInfoModel link = snapshot.data!;
-                      //           link.folder.add('default');
-                      //           storageController.allLinks.add(link);
-                      //         }
-                      //         storageController.allLinks.forEach((element) {
-                      //           print(element.title);
-                      //         });
-                      //         Get.toNamed('menu');
-                      //       },
-                      //       child: Icon(Icons.print),
-                      //     )
-                      //   ],
-                      // ),
+
+                      //TODO: When i remove a folder and go back to card page
+                      //(with back button) deleted folder is visible in this list
+                      //tips: use Get.offNamed() instead of Get.toNamed()
                       LineOfFolders(folderList: storageController.folderList)
                     ],
                   ),

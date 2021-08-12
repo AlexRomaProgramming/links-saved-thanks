@@ -22,7 +22,7 @@ class FolderPage extends StatelessWidget {
     return Scaffold(
         body: Stack(
       children: [
-        BackgroundWidget(),
+        const BackgroundWidget(),
         Column(
           children: [
             SafeArea(

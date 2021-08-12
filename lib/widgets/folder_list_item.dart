@@ -34,6 +34,8 @@ class FolderListItem extends StatelessWidget {
                 .contains(text)) {
               //new folder name added
               storageController.allLinks[positionInList].folder.add(text);
+              //must trigger rewriting of allLinksList, property of an element of the list will change
+              storageController.recordLinkList(storageController.allLinks);
             }
             //put new datetame, will sort by date in folder page
             storageController.allLinks[positionInList].date = DateTime.now();

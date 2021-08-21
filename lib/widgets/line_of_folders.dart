@@ -18,7 +18,7 @@ class LineOfFolders extends StatelessWidget {
         delay: Duration(milliseconds: 1000),
         duration: Duration(milliseconds: 500),
         child: Container(
-          height: Get.height * 0.065,
+          height: Get.height * 0.18,
           child: ListView.builder(
             physics: BouncingScrollPhysics(),
             scrollDirection: Axis.horizontal,

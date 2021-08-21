@@ -16,8 +16,16 @@ class FolderListItem extends StatelessWidget {
       child: DragTarget<LinkInfoModel>(
         builder: (BuildContext context, List<Object?> candidateData,
             List<dynamic> rejectedData) {
-          return ListItemContainer(
-              text: text, highlighted: candidateData.isNotEmpty);
+          return Container(
+            height: double.infinity,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                ListItemContainer(
+                    text: text, highlighted: candidateData.isNotEmpty),
+              ],
+            ),
+          );
         },
         onAccept: (data) {
           LinkInfoModel newItem = data;

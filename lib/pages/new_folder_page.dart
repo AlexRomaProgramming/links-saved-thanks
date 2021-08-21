@@ -136,14 +136,15 @@ class _NewFolderPageState extends State<NewFolderPage> {
       message,
       titleText: Text(
         title,
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+        style: TextStyle(
+            fontWeight: FontWeight.bold, fontSize: 24, color: Colors.white),
       ),
       messageText: Text(
         message,
-        style: TextStyle(fontSize: 16),
+        style: TextStyle(fontSize: 16, color: Colors.white),
       ),
       icon: icon,
-      snackPosition: SnackPosition.BOTTOM,
+      snackPosition: SnackPosition.TOP,
       duration: Duration(seconds: 3),
       barBlur: 12,
       borderWidth: 2,

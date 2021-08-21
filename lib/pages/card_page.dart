@@ -35,9 +35,10 @@ class CardPage extends StatelessWidget {
                 Container(
                   margin: EdgeInsets.symmetric(vertical: 30),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       GestureDetector(
+                        //TODO: When you go to create new folder and return with back button here new folder don't appear
                         onTap: () {
                           storageController.bottomBarIndex.value = 0;
                           Get.toNamed('menu');
@@ -53,6 +54,19 @@ class CardPage extends StatelessWidget {
                             ],
                           ),
                         ),
+                      ),
+                      //TODO: When i remove a folder and go back to card page
+                      //(with back button) deleted folder is visible in this list
+                      //tips: use Get.offNamed() instead of Get.toNamed()
+                      LineOfFolders(folderList: storageController.folderList),
+                      FadeInUp(
+                        child: Icon(FontAwesomeIcons.arrowUp,
+                            size: 80, color: Colors.white.withOpacity(0.3)),
+                      ),
+                      Text(
+                        'Drag and drop the card',
+                        style: TextStyle(
+                            fontSize: 18, color: Colors.white.withOpacity(0.5)),
                       ),
                       Draggable(
                           data: snapshot.data,
@@ -76,21 +90,8 @@ class CardPage extends StatelessWidget {
                             ),
                           ),
                           child: LinkCard(dataFetched: snapshot.data)),
-                      Text(
-                        'Drag the card and drop in the folder of you choice',
-                        style: TextStyle(
-                            fontSize: 18, color: Colors.white.withOpacity(0.5)),
-                      ),
-                      FadeInDown(
-                        child: Icon(FontAwesomeIcons.arrowDown,
-                            size: 100, color: Colors.white.withOpacity(0.3)),
-                      ),
-                      Spacer(),
 
-                      //TODO: When i remove a folder and go back to card page
-                      //(with back button) deleted folder is visible in this list
-                      //tips: use Get.offNamed() instead of Get.toNamed()
-                      LineOfFolders(folderList: storageController.folderList)
+                      //Spacer(),
                     ],
                   ),
                 ),

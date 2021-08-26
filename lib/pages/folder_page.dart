@@ -8,11 +8,10 @@ import 'package:links_saved_thanks/widgets/background.dart';
 import 'package:links_saved_thanks/widgets/links_list_view.dart';
 
 class FolderPage extends StatelessWidget {
+  //name of folder come with arguments from previous page
+  final String folderName = Get.arguments;
   @override
   Widget build(BuildContext context) {
-    //name of folder come with arguments from previous page
-    final String folderName = Get.arguments;
-
     return Scaffold(
         body: Stack(
       children: [
@@ -23,7 +22,7 @@ class FolderPage extends StatelessWidget {
           child: Column(
             children: [
               Container(
-                color: Colors.indigo.shade400.withOpacity(0.5),
+                color: Colors.indigo.shade900,
                 height: Get.height * 0.065 + MediaQuery.of(context).padding.top,
                 child: Container(
                   margin:

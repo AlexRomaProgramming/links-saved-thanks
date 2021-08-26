@@ -7,6 +7,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:links_saved_thanks/controllers/storage_controller.dart';
+import 'package:links_saved_thanks/helpers/build_snackbar.dart';
 import 'package:links_saved_thanks/models/link_info_model.dart';
 import 'package:links_saved_thanks/widgets/background.dart';
 import 'package:links_saved_thanks/widgets/bottom_bar.dart';
@@ -99,6 +100,7 @@ class _MenuPageState extends State<MenuPage>
                 icon: FontAwesomeIcons.edit,
                 label: 'Edit',
                 onPressed: (context) {
+                  _controller.text = text;
                   Get.defaultDialog(
                     title: 'Enter new folder name',
                     titleStyle: TextStyle(color: Colors.indigo.shade900),
@@ -107,7 +109,6 @@ class _MenuPageState extends State<MenuPage>
                     confirmTextColor: Colors.white,
                     cancelTextColor: Colors.indigo.shade900,
                     content: TextField(
-                      //autofocus: true,
                       style: TextStyle(
                           color: Colors.indigo.shade900,
                           fontSize: 22,
@@ -121,7 +122,7 @@ class _MenuPageState extends State<MenuPage>
                       _controller.clear();
                     },
                     onConfirm: () {
-                      _confirmNewFolderName(index);
+                      _confirmNewFolderName(index, text);
                     },
                   );
                 },
@@ -184,12 +185,14 @@ class _MenuPageState extends State<MenuPage>
     );
   }
 
-  void _confirmNewFolderName(int index) {
+  void _confirmNewFolderName(int index, String foldersName) {
     if (_controller.text.trim() == '') {
       Get.back();
 
-      _buildSnackbar('Error', 'Enter at least one character',
+      buildSimpleSnackbar('Error', 'Enter at least one character',
           Icon(FontAwesomeIcons.exclamationCircle, color: Colors.red));
+    } else if (_controller.text.trim() == foldersName) {
+      Get.back();
     } else if (!storageController.folderList
         .contains(_controller.text.trim())) {
       String oldName = storageController.folderList[index];
@@ -204,38 +207,16 @@ class _MenuPageState extends State<MenuPage>
         }
       });
       Get.back();
-      _buildSnackbar(newName, 'New folder name was created',
+      buildSimpleSnackbar(newName, 'New folder name was created',
           Icon(FontAwesomeIcons.checkCircle, color: Colors.limeAccent));
     } else {
       Get.back();
-      _buildSnackbar('Error', 'The folder with this name already exists',
+      buildSimpleSnackbar('Error', 'The folder with this name already exists',
           Icon(FontAwesomeIcons.exclamationCircle, color: Colors.red));
     }
 
     _controller.clear();
     setState(() {});
-  }
-
-  void _buildSnackbar(String title, String message, Icon icon) {
-    return Get.snackbar(
-      title,
-      message,
-      titleText: Text(
-        title,
-        style: TextStyle(
-            fontWeight: FontWeight.bold, fontSize: 24, color: Colors.white),
-      ),
-      messageText: Text(
-        message,
-        style: TextStyle(fontSize: 16, color: Colors.white),
-      ),
-      icon: icon,
-      snackPosition: SnackPosition.TOP,
-      duration: Duration(seconds: 3),
-      barBlur: 12,
-      borderWidth: 2,
-      borderColor: Colors.limeAccent,
-    );
   }
 
   void _deleteFolder(

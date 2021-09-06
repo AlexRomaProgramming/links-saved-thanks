@@ -1,10 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:get/get.dart';
 import 'package:animate_do/animate_do.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'package:links_saved_thanks/controllers/storage_controller.dart';
 import 'package:links_saved_thanks/helpers/build_snackbar.dart';
@@ -86,7 +87,7 @@ class _LinksListViewState extends State<LinksListView>
                 children: [
                   SlidableAction(
                     spacing: 8,
-                    backgroundColor: Colors.limeAccent,
+                    backgroundColor: Colors.limeAccent.shade700,
                     foregroundColor: Colors.black54,
                     icon: FontAwesomeIcons.edit,
                     label: 'Edit',
@@ -124,7 +125,7 @@ class _LinksListViewState extends State<LinksListView>
                 children: [
                   SlidableAction(
                     spacing: 8,
-                    backgroundColor: Colors.red.shade300,
+                    backgroundColor: Colors.deepOrangeAccent.shade400,
                     foregroundColor: Colors.black54,
                     icon: FontAwesomeIcons.trashAlt,
                     label: 'Delete',
@@ -141,43 +142,48 @@ class _LinksListViewState extends State<LinksListView>
     );
   }
 
-  Column _listItemCard(List<LinkInfoModel> listofCategory, int index) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        ClipRRect(
-          borderRadius: BorderRadius.only(topRight: Radius.circular(30)),
-          child: Container(
-              color: Colors.grey.shade400,
-              alignment: Alignment.center,
-              child: (listofCategory[index].image == 'no_image')
-                  ? Image.asset('assets/img/no-image.png',
-                      width: double.infinity,
-                      height: Get.height * 0.33,
-                      fit: BoxFit.cover)
-                  : FadeInImage.assetNetwork(
-                      height: Get.height * 0.33,
-                      fit: BoxFit.cover,
-                      placeholder: 'assets/img/jar-loading.gif',
-                      image: listofCategory[index].image)),
-        ),
-        Container(
-          height: Get.height * 0.08,
-          width: double.infinity,
-          padding: EdgeInsets.symmetric(horizontal: 20),
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-              color: Colors.indigo.shade400,
-              borderRadius: BorderRadiusDirectional.only(
-                  bottomStart: Radius.circular(30))),
-          child: Text(
-            listofCategory[index].title,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(color: Colors.white, fontSize: 18),
+  Widget _listItemCard(List<LinkInfoModel> listofCategory, int index) {
+    return GestureDetector(
+      onTap: () {
+        _launchUrl(listofCategory, index);
+      },
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.only(topRight: Radius.circular(30)),
+            child: Container(
+                color: Colors.grey.shade400,
+                alignment: Alignment.center,
+                child: (listofCategory[index].image == 'no_image')
+                    ? Image.asset('assets/img/no-image.png',
+                        width: double.infinity,
+                        height: Get.height * 0.33,
+                        fit: BoxFit.cover)
+                    : FadeInImage.assetNetwork(
+                        height: Get.height * 0.33,
+                        fit: BoxFit.cover,
+                        placeholder: 'assets/img/jar-loading.gif',
+                        image: listofCategory[index].image)),
           ),
-        )
-      ],
+          Container(
+            height: Get.height * 0.08,
+            width: double.infinity,
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+                color: Colors.indigo,
+                borderRadius: BorderRadiusDirectional.only(
+                    bottomStart: Radius.circular(30))),
+            child: Text(
+              listofCategory[index].title,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(color: Colors.white, fontSize: 18),
+            ),
+          )
+        ],
+      ),
     );
   }
 
@@ -222,8 +228,12 @@ class _LinksListViewState extends State<LinksListView>
     if (_controller.text.trim() == '') {
       Get.back();
 
-      buildSimpleSnackbar('Error', 'Enter at least one character',
-          Icon(FontAwesomeIcons.exclamationCircle, color: Colors.red));
+      buildSimpleSnackbar(
+          'Error',
+          'Enter at least one character',
+          Icon(FontAwesomeIcons.exclamationCircle,
+              color: Colors.deepOrangeAccent.shade400),
+          false);
       //if title is not repeated
     } else if (!titles.contains(_controller.text.trim())) {
       String newTitle = _controller.text.trim();
@@ -240,15 +250,37 @@ class _LinksListViewState extends State<LinksListView>
       });
 
       Get.back();
-      buildSimpleSnackbar(_controller.text, 'New title was created',
-          Icon(FontAwesomeIcons.checkCircle, color: Colors.limeAccent));
+      buildSimpleSnackbar(
+          _controller.text,
+          'New title was created',
+          Icon(FontAwesomeIcons.checkCircle, color: Colors.limeAccent.shade700),
+          true);
     } else {
       Get.back();
-      buildSimpleSnackbar('Error', 'The title already exists',
-          Icon(FontAwesomeIcons.exclamationCircle, color: Colors.red));
+      buildSimpleSnackbar(
+          'Error',
+          'The title already exists',
+          Icon(FontAwesomeIcons.exclamationCircle,
+              color: Colors.deepOrangeAccent.shade400),
+          false);
     }
 
     _controller.clear();
     setState(() {});
+  }
+
+  _launchUrl(List<LinkInfoModel> listofCategory, int index) async {
+    final url = listofCategory[index].url;
+    if (await canLaunch(url)) {
+      //package url_launcher used
+      await launch(url);
+    } else {
+      buildSimpleSnackbar(
+          'Error',
+          'Could not launch this page',
+          Icon(FontAwesomeIcons.exclamationCircle,
+              color: Colors.deepOrangeAccent.shade400),
+          false);
+    }
   }
 }

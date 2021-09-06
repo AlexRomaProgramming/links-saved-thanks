@@ -95,7 +95,7 @@ class _MenuPageState extends State<MenuPage>
             children: [
               SlidableAction(
                 spacing: 8,
-                backgroundColor: Colors.limeAccent,
+                backgroundColor: Colors.limeAccent.shade700,
                 foregroundColor: Colors.black54,
                 icon: FontAwesomeIcons.edit,
                 label: 'Edit',
@@ -115,6 +115,9 @@ class _MenuPageState extends State<MenuPage>
                           fontWeight: FontWeight.w600),
                       textAlign: TextAlign.center,
                       controller: _controller,
+                      onSubmitted: (value) {
+                        _confirmNewFolderName(index, text);
+                      },
                     ),
                     textConfirm: 'Confirm',
                     textCancel: 'Cancel',
@@ -134,7 +137,7 @@ class _MenuPageState extends State<MenuPage>
             children: [
               SlidableAction(
                 spacing: 8,
-                backgroundColor: Colors.red.shade300,
+                backgroundColor: Colors.deepOrangeAccent.shade400,
                 foregroundColor: Colors.black54,
                 icon: FontAwesomeIcons.trashAlt,
                 label: 'Delete',
@@ -189,8 +192,12 @@ class _MenuPageState extends State<MenuPage>
     if (_controller.text.trim() == '') {
       Get.back();
 
-      buildSimpleSnackbar('Error', 'Enter at least one character',
-          Icon(FontAwesomeIcons.exclamationCircle, color: Colors.red));
+      buildSimpleSnackbar(
+          'Error',
+          'Enter at least one character',
+          Icon(FontAwesomeIcons.exclamationCircle,
+              color: Colors.deepOrangeAccent.shade400),
+          false);
     } else if (_controller.text.trim() == foldersName) {
       Get.back();
     } else if (!storageController.folderList
@@ -207,12 +214,19 @@ class _MenuPageState extends State<MenuPage>
         }
       });
       Get.back();
-      buildSimpleSnackbar(newName, 'New folder name was created',
-          Icon(FontAwesomeIcons.checkCircle, color: Colors.limeAccent));
+      buildSimpleSnackbar(
+          newName,
+          'New folder name was created',
+          Icon(FontAwesomeIcons.checkCircle, color: Colors.limeAccent.shade700),
+          true);
     } else {
       Get.back();
-      buildSimpleSnackbar('Error', 'The folder with this name already exists',
-          Icon(FontAwesomeIcons.exclamationCircle, color: Colors.red));
+      buildSimpleSnackbar(
+          'Error',
+          'The folder with this name already exists',
+          Icon(FontAwesomeIcons.exclamationCircle,
+              color: Colors.deepOrangeAccent.shade400),
+          false);
     }
 
     _controller.clear();

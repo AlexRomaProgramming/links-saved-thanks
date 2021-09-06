@@ -6,6 +6,7 @@ import 'package:get_storage/get_storage.dart';
 
 import 'package:links_saved_thanks/pages/home_page.dart';
 import 'package:links_saved_thanks/pages/folder_page.dart';
+import 'package:links_saved_thanks/pages/intro_page.dart';
 import 'package:links_saved_thanks/pages/menu_page.dart';
 import 'package:links_saved_thanks/pages/new_folder_page.dart';
 import 'package:links_saved_thanks/pages/search_page.dart';
@@ -25,8 +26,9 @@ class MyApp extends StatelessWidget {
       title: 'Links Saved Thanks',
       theme: ThemeData(scaffoldBackgroundColor: Colors.indigo.shade200),
       debugShowCheckedModeBanner: false,
-      initialRoute: 'home',
+      initialRoute: 'intro',
       getPages: [
+        GetPage(name: 'intro', page: () => IntroPage()),
         GetPage(
             name: 'home',
             page: () => HomePage(),

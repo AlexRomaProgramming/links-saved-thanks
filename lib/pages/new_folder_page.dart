@@ -18,6 +18,7 @@ class NewFolderPage extends StatefulWidget {
 class _NewFolderPageState extends State<NewFolderPage> {
   late TextEditingController _controller;
   bool textFieldEnabled = true;
+  final StorageController storageController = Get.find();
 
   @override
   void initState() {
@@ -33,7 +34,6 @@ class _NewFolderPageState extends State<NewFolderPage> {
 
   @override
   Widget build(BuildContext context) {
-    final StorageController storageController = Get.find();
     return Scaffold(
       resizeToAvoidBottomInset: false, //for avoid resizing of layout
       bottomNavigationBar: BottomBar(storageController: storageController),
@@ -59,6 +59,9 @@ class _NewFolderPageState extends State<NewFolderPage> {
                         enabled: textFieldEnabled,
                         //autofocus: true,
                         controller: _controller,
+                        onSubmitted: (value) {
+                          _saveEdited();
+                        },
                         cursorColor: Colors.white,
                         decoration: InputDecoration(
                             filled: true,
@@ -79,37 +82,8 @@ class _NewFolderPageState extends State<NewFolderPage> {
                       OutlinedButton.icon(
                           style: OutlinedButton.styleFrom(
                               side: BorderSide(color: Colors.indigo.shade900),
-                              primary: Colors.limeAccent),
-                          onPressed: () {
-                            //remove keyboard
-                            FocusScope.of(context).unfocus();
-                            if (!Get.isSnackbarOpen!) {
-                              if (_controller.text.trim() == '') {
-                                _buildSnackbar(
-                                    'Error',
-                                    'Enter at least one character',
-                                    Icon(FontAwesomeIcons.exclamationCircle,
-                                        color: Colors.red));
-                              } else if (!storageController.folderList
-                                  .contains(_controller.text)) {
-                                storageController.folderList
-                                    .add(_controller.text.trim());
-                                storageController.bottomBarIndex.value = 0;
-                                Get.toNamed('menu');
-                                _buildSnackbar(
-                                    _controller.text,
-                                    'This folder was added to the list',
-                                    Icon(FontAwesomeIcons.checkCircle,
-                                        color: Colors.limeAccent));
-                              } else {
-                                _buildSnackbar(
-                                    'Error',
-                                    'The folder with this name already exists',
-                                    Icon(FontAwesomeIcons.exclamationCircle,
-                                        color: Colors.red));
-                              }
-                            }
-                          },
+                              primary: Colors.limeAccent.shade400),
+                          onPressed: _saveEdited,
                           icon: Icon(
                             FontAwesomeIcons.fileDownload,
                             color: Colors.indigo.shade900,
@@ -130,7 +104,40 @@ class _NewFolderPageState extends State<NewFolderPage> {
     );
   }
 
-  void _buildSnackbar(String title, String message, Icon icon) {
+  void _saveEdited() {
+    //remove keyboard
+    FocusScope.of(context).unfocus();
+    if (!Get.isSnackbarOpen!) {
+      if (_controller.text.trim() == '') {
+        _buildSnackbar(
+            'Error',
+            'Enter at least one character',
+            Icon(FontAwesomeIcons.exclamationCircle,
+                color: Colors.deepOrangeAccent.shade400),
+            false);
+      } else if (!storageController.folderList.contains(_controller.text)) {
+        storageController.folderList.add(_controller.text.trim());
+        storageController.bottomBarIndex.value = 0;
+        Get.toNamed('menu');
+        _buildSnackbar(
+            _controller.text,
+            'This folder was added to the list',
+            Icon(FontAwesomeIcons.checkCircle,
+                color: Colors.limeAccent.shade700),
+            true);
+      } else {
+        _buildSnackbar(
+            'Error',
+            'The folder with this name already exists',
+            Icon(FontAwesomeIcons.exclamationCircle,
+                color: Colors.deepOrangeAccent.shade400),
+            false);
+      }
+    }
+  }
+
+  void _buildSnackbar(
+      String title, String message, Icon icon, bool isActionSuccessful) {
     return Get.snackbar(
       title,
       message,
@@ -148,7 +155,9 @@ class _NewFolderPageState extends State<NewFolderPage> {
       duration: Duration(seconds: 3),
       barBlur: 12,
       borderWidth: 2,
-      borderColor: Colors.limeAccent,
+      borderColor: isActionSuccessful
+          ? Colors.limeAccent.shade700
+          : Colors.deepOrangeAccent.shade400,
       snackbarStatus: (status) {
         if (status == SnackbarStatus.OPENING) {
           setState(() {

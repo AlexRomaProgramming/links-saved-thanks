@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.links_saved_thanks">
+
    <application
         android:label="links_saved_thanks"
         android:icon="@mipmap/ic_launcher">
@@ -43,4 +44,14 @@
             android:name="flutterEmbedding"
             android:value="2" />
     </application>
+    <queries>
+        <intent>
+          <action android:name="android.intent.action.VIEW" />
+          <data android:scheme="https" />
+        </intent>
+        <intent>
+          <action android:name="android.intent.action.VIEW" />
+          <data android:scheme="https" />
+        </intent>
+    </queries>
 </manifest>

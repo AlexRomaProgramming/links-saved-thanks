@@ -4,12 +4,15 @@ import 'package:animate_do/animate_do.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
+import 'package:links_saved_thanks/controllers/storage_controller.dart';
 import 'package:links_saved_thanks/widgets/background.dart';
 import 'package:links_saved_thanks/widgets/links_list_view.dart';
 
 class FolderPage extends StatelessWidget {
   //name of folder come with arguments from previous page
-  final String folderName = Get.arguments;
+  final String folderName = Get.arguments[0];
+  final String searchedLinkTitle = Get.arguments[1];
+  final StorageController storageController = Get.find();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,6 +36,7 @@ class FolderPage extends StatelessWidget {
                       IconButton(
                           onPressed: () {
                             Get.toNamed('menu');
+                            storageController.bottomBarIndex.value = 0;
                           },
                           icon: Icon(
                             FontAwesomeIcons.arrowLeft,
@@ -53,7 +57,9 @@ class FolderPage extends StatelessWidget {
                 ),
               ),
               Expanded(
-                child: LinksListView(folderName: folderName),
+                child: LinksListView(
+                    folderName: folderName,
+                    searchedLinkTitle: searchedLinkTitle),
               )
             ],
           ),

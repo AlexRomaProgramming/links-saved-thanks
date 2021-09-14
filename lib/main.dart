@@ -24,7 +24,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'Links Saved Thanks',
-      theme: ThemeData(scaffoldBackgroundColor: Colors.indigo.shade200),
+      theme: ThemeData(
+          scaffoldBackgroundColor: Colors.indigo.shade200,
+          primaryColor: Colors.indigo.shade900),
       debugShowCheckedModeBanner: false,
       initialRoute: 'intro',
       getPages: [

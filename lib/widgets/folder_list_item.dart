@@ -3,16 +3,25 @@ import 'package:get/get.dart';
 import 'package:links_saved_thanks/controllers/storage_controller.dart';
 import 'package:links_saved_thanks/models/link_info_model.dart';
 
-class FolderListItem extends StatelessWidget {
+class FolderListItem extends StatefulWidget {
   final String text;
 
   const FolderListItem({Key? key, required this.text}) : super(key: key);
 
   @override
+  State<FolderListItem> createState() => _FolderListItemState();
+}
+
+class _FolderListItemState extends State<FolderListItem> {
+  @override
   Widget build(BuildContext context) {
     final StorageController storageController = Get.find();
     return GestureDetector(
-      onTap: () => Get.toNamed('folder', arguments: text),
+      onTap: () =>
+          Get.toNamed('folder', arguments: [widget.text, '+not*from#search+'])!
+              .then((value) {
+        setState(() {});
+      }),
       child: DragTarget<LinkInfoModel>(
         builder: (BuildContext context, List<Object?> candidateData,
             List<dynamic> rejectedData) {
@@ -22,7 +31,7 @@ class FolderListItem extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 ListItemContainer(
-                    text: text, highlighted: candidateData.isNotEmpty),
+                    text: widget.text, highlighted: candidateData.isNotEmpty),
               ],
             ),
           );
@@ -34,21 +43,22 @@ class FolderListItem extends StatelessWidget {
           int positionInList = storageController.positionIfUrlExists(data.url);
           //if link is new position -1
           if (positionInList == -1) {
-            newItem.folder.add(text);
+            newItem.folder.add(widget.text);
             storageController.allLinks.add(newItem);
           } else {
             //if no exist this folder name for this link
             if (!storageController.allLinks[positionInList].folder
-                .contains(text)) {
+                .contains(widget.text)) {
               //new folder name added
-              storageController.allLinks[positionInList].folder.add(text);
+              storageController.allLinks[positionInList].folder
+                  .add(widget.text);
               //must trigger rewriting of allLinksList, property of an element of the list will change
               storageController.recordLinkList(storageController.allLinks);
             }
             //put new datetame, will sort by date in folder page
             storageController.allLinks[positionInList].date = DateTime.now();
           }
-          Get.toNamed('menu');
+          Get.offNamed('menu');
         },
       ),
     );

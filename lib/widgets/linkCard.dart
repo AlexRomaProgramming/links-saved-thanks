@@ -20,14 +20,14 @@ class LinkCard extends StatefulWidget {
 
 class _LinkCardState extends State<LinkCard> {
   //controller for animation
-  late final AnimationController aCtrlTextUp;
+  late final AnimationController animationCardTitle;
 
   //each time we rebuild widget it restart the animation
   @override
   void didUpdateWidget(covariant LinkCard oldWidget) {
     //if is the same card - don´t start animation
     if (widget.dataFetched!.title != oldWidget.dataFetched!.title) {
-      aCtrlTextUp
+      animationCardTitle
         ..reset()
         ..forward();
     }
@@ -37,7 +37,7 @@ class _LinkCardState extends State<LinkCard> {
 
   @override
   void dispose() {
-    aCtrlTextUp.dispose();
+    animationCardTitle.dispose();
 
     super.dispose();
   }
@@ -70,7 +70,7 @@ class _LinkCardState extends State<LinkCard> {
                     placeholder: 'assets/img/jar-loading.gif',
                     image: widget.dataFetched!.image),
               FadeIn(
-                  controller: (controller) => aCtrlTextUp = controller,
+                  controller: (controller) => animationCardTitle = controller,
                   delay: Duration(milliseconds: 1000),
                   duration: Duration(milliseconds: 1000),
                   child: ClipRRect(

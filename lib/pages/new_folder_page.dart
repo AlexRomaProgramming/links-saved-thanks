@@ -35,7 +35,8 @@ class _NewFolderPageState extends State<NewFolderPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false, //for avoid resizing of layout
+      resizeToAvoidBottomInset:
+          false, //for avoid resizing of layout with keyboard
       bottomNavigationBar: BottomBar(storageController: storageController),
       body: Stack(children: [
         const BackgroundWidget(),
@@ -55,7 +56,7 @@ class _NewFolderPageState extends State<NewFolderPage> {
                             color: Colors.white,
                             fontWeight: FontWeight.w700,
                             fontSize: 22),
-                        textAlign: TextAlign.center,
+                        //textAlign: TextAlign.center,
                         enabled: textFieldEnabled,
                         //autofocus: true,
                         controller: _controller,
@@ -71,7 +72,7 @@ class _NewFolderPageState extends State<NewFolderPage> {
                               color: Colors.white38,
                             ),
                             //labelText: 'New folder',
-                            hintText: 'Enter folder name',
+                            hintText: 'Enter folder name...',
                             hintStyle:
                                 TextStyle(color: Colors.white38, fontSize: 22),
                             border: OutlineInputBorder(

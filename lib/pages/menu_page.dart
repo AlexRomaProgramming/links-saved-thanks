@@ -86,7 +86,7 @@ class _MenuPageState extends State<MenuPage>
   Widget _itemOfFolderList(
       int index, String text, List<LinkInfoModel> listOfCategory) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 5.0),
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Slidable(
         groupTag: '0',
         startActionPane: ActionPane(
@@ -154,10 +154,10 @@ class _MenuPageState extends State<MenuPage>
                       listOfCategory.last.image == 'no_image')
                   ? Image.asset('assets/img/no-image.png',
                       width: double.infinity,
-                      height: Get.height * 0.36,
+                      //height: Get.height * 0.18,
                       fit: BoxFit.cover)
                   : FadeInImage.assetNetwork(
-                      height: Get.height * 0.36,
+                      //height: Get.height * 0.36,
                       fit: BoxFit.cover,
                       placeholder: 'assets/img/jar-loading.gif',
                       image: listOfCategory.last.image)),
@@ -182,7 +182,8 @@ class _MenuPageState extends State<MenuPage>
               )
             ],
           ),
-          onTap: () => Get.toNamed('folder', arguments: text),
+          onTap: () =>
+              Get.toNamed('folder', arguments: [text, '+not*from#search+']),
         ),
       ),
     );
@@ -242,7 +243,7 @@ class _MenuPageState extends State<MenuPage>
         (context, animation) =>
             _animatedItem(context, index, animation, text, listOfCategory),
         duration: const Duration(milliseconds: 500));
-
+    //delete the folder
     storageController.folderList.remove(text);
     storageController.allLinks.forEach((element) {
       //remove folder name in all places
@@ -251,11 +252,16 @@ class _MenuPageState extends State<MenuPage>
         //if a link don't has nothing in folder list remember its position
         voidPosition.add(storageController.allLinks.indexOf(element));
     });
+
     if (voidPosition.length > 0) {
       //sort from bigger to smaller for delete biggers first
       voidPosition.sort((a, b) => b.compareTo(a));
-      //delet first biggers index for avoid shifting of elements
+      //delete first biggers index for avoid shifting of elements
       voidPosition.forEach((position) {
+        //remove link from search history
+        storageController.searchHistoryList
+            .remove(storageController.allLinks[position].title);
+        //remove link from app
         storageController.allLinks.removeAt(position);
       });
     }

@@ -7,6 +7,7 @@ class StorageController extends GetxController {
   var allLinks = <LinkInfoModel>[].obs; //main list of all links
   var bottomBarIndex = 0.obs; //which bottom bar item is activated
   var folderList = <String>[].obs; //list of all existing folders
+  var searchHistoryList = <String>[].obs; //search history list
 
   @override
   onInit() {
@@ -20,12 +21,20 @@ class StorageController extends GetxController {
         GetStorage('Data').read('allFolders') ?? <String>['Default'];
     folderList = new RxList.from(folderListAux);
 
+    //read search history list from storage and pass it to RxList
+    var searchHistoryListAux =
+        GetStorage('Data').read('historyList') ?? <String>[];
+    searchHistoryList = new RxList.from(searchHistoryListAux);
+
     //Evry time list changes write to storage
     ever(allLinks, (_) {
       GetStorage('Data').write('allLinksList', allLinks.toList());
     });
     ever(folderList, (_) {
       GetStorage('Data').write('allFolders', folderList);
+    });
+    ever(searchHistoryList, (_) {
+      GetStorage('Data').write('historyList', searchHistoryList);
     });
     super.onInit();
   }
@@ -47,9 +56,10 @@ class StorageController extends GetxController {
   //when close app passing LinkInfoModels to json and save it
   @override
   void onClose() {
+    //TODO: separate storage for allLinks list
     var listToSave = allLinks.map((element) => element.toJson()).toList();
     GetStorage('Data').write('allLinksList', listToSave.toList());
-    GetStorage('Data').write('allFolders', folderList.toList());
+    //GetStorage('Data').write('allFolders', folderList.toList());
     super.onClose();
   }
   //TODO: when app exits with Back button remember where for restart

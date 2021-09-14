@@ -11,7 +11,7 @@ import 'package:links_saved_thanks/widgets/background.dart';
 import 'package:links_saved_thanks/widgets/line_of_folders.dart';
 import 'package:links_saved_thanks/widgets/linkCard.dart';
 
-class CardPage extends StatelessWidget {
+class CardPage extends StatefulWidget {
   const CardPage({
     Key? key,
     required String? sharedText,
@@ -23,10 +23,15 @@ class CardPage extends StatelessWidget {
   final StorageController storageController;
 
   @override
+  State<CardPage> createState() => _CardPageState();
+}
+
+class _CardPageState extends State<CardPage> {
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: FutureBuilder(
-        future: fetchLinkInfo(_sharedText!),
+        future: fetchLinkInfo(widget._sharedText!),
         builder: (BuildContext context, AsyncSnapshot<LinkInfoModel> snapshot) {
           if (snapshot.hasData) {
             return Stack(
@@ -40,8 +45,10 @@ class CardPage extends StatelessWidget {
                       GestureDetector(
                         //TODO: When you go to create new folder and return with back button here new folder don't appear
                         onTap: () {
-                          storageController.bottomBarIndex.value = 0;
-                          Get.toNamed('menu');
+                          widget.storageController.bottomBarIndex.value = 0;
+                          Get.toNamed('menu')?.then((value) {
+                            setState(() {});
+                          });
                         },
                         child: Container(
                           margin: EdgeInsets.all(15),
@@ -58,7 +65,8 @@ class CardPage extends StatelessWidget {
                       //TODO: When i remove a folder and go back to card page
                       //(with back button) deleted folder is visible in this list
                       //tips: use Get.offNamed() instead of Get.toNamed()
-                      LineOfFolders(folderList: storageController.folderList),
+                      LineOfFolders(
+                          folderList: widget.storageController.folderList),
                       FadeInUp(
                         child: Icon(FontAwesomeIcons.arrowUp,
                             size: 80, color: Colors.white.withOpacity(0.3)),
@@ -101,7 +109,9 @@ class CardPage extends StatelessWidget {
             //TODO: do something with it
             return Center(child: Text('Snapshot has error !!!'));
           } else {
-            return Center(child: CircularProgressIndicator());
+            return Center(
+                child:
+                    CircularProgressIndicator(color: Colors.indigo.shade900));
           }
         },
       ),

@@ -68,6 +68,7 @@ class _LinksListViewState extends State<LinksListView>
       //controller without scroll offset
       _scrollController = ScrollController();
     }
+    print('LinksListView ${widget.folderName}');
 
     return FadeIn(
       delay: Duration(milliseconds: 500),

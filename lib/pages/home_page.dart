@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:links_saved_thanks/pages/menu_page.dart';
-import 'package:links_saved_thanks/pages/card_page.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 
+import 'package:links_saved_thanks/pages/menu_page.dart';
+import 'package:links_saved_thanks/pages/card_page.dart';
 import 'package:links_saved_thanks/controllers/storage_controller.dart';
 
 class HomePage extends StatefulWidget {
@@ -15,9 +15,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final StorageController storageController = Get.find();
   late StreamSubscription _intentDataStreamSubscription;
   String? _sharedText;
-  final StorageController storageController = Get.put(StorageController());
 
   @override
   void initState() {
@@ -55,12 +55,37 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     if (_sharedText != null && _sharedText != '') {
-      return CardPage(
-          sharedText: _sharedText, storageController: storageController);
+      storageController.isFromOutside.value = true;
+      return WillPopScope(
+        onWillPop: _backButtonOverride,
+        child: CardPage(sharedText: _sharedText),
+      );
     } else {
-      //TODO: When started from cold shows this screen a fraction of second, need fix
-
-      return MenuPage();
+      storageController.isFromOutside.value = false;
+      return WillPopScope(onWillPop: _backButtonOverride, child: MenuPage());
     }
+  }
+
+  Future<bool> _backButtonOverride() async {
+    bool wantExit = false;
+    await Get.defaultDialog(
+      title: 'Do you want to exit the app?',
+      content: Container(),
+      titleStyle: TextStyle(color: Colors.indigo.shade900),
+      backgroundColor: Colors.indigo.shade100,
+      buttonColor: Colors.indigo.shade900,
+      confirmTextColor: Colors.white,
+      cancelTextColor: Colors.indigo.shade900,
+      textConfirm: 'Yes',
+      textCancel: 'No',
+      onCancel: () {
+        wantExit = false;
+      },
+      onConfirm: () {
+        Get.back();
+        wantExit = true;
+      },
+    );
+    return wantExit;
   }
 }

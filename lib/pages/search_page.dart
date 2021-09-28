@@ -1,9 +1,11 @@
 import 'dart:async';
 
-import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+
+import 'package:animate_do/animate_do.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+
 import 'package:links_saved_thanks/controllers/storage_controller.dart';
 import 'package:links_saved_thanks/models/link_info_model.dart';
 import 'package:links_saved_thanks/widgets/background.dart';
@@ -57,17 +59,8 @@ class _SearchPageState extends State<SearchPage> {
     return TextField(
       style: TextStyle(
           color: Colors.white, fontWeight: FontWeight.w700, fontSize: 22),
-      //textAlign: TextAlign.center,
-      //enabled: textFieldEnabled,
-      //autofocus: true,
-      // onTap: () {
-      //   storageController.allLinks.forEach((element) {
-      //     print(element.folder[0] + '---' + element.title);
-      //   });
-      // },
       controller: _searchQuery,
       onChanged: _onSearchChanged,
-      onSubmitted: (value) {},
       cursorColor: Colors.white,
       decoration: InputDecoration(
           filled: true,
@@ -109,7 +102,6 @@ class _SearchPageState extends State<SearchPage> {
       setState(() {
         query = searchText;
       });
-      //print('searchText: $query');
     });
   }
 

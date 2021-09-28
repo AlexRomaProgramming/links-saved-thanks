@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+
 import 'package:links_saved_thanks/controllers/storage_controller.dart';
 
 class BottomBar extends StatelessWidget {
@@ -19,16 +21,31 @@ class BottomBar extends StatelessWidget {
           storageController.bottomBarIndex.value = value;
           //TODO: switch ??? for default value
           if (value == 0) {
-            Get.toNamed('menu');
+            if (storageController.isFromOutside.value) {
+              Get.until((route) => Get.currentRoute == 'menu');
+            } else {
+              Get.until((route) => Get.currentRoute == 'home');
+            }
           } else if (value == 1) {
-            Get.toNamed('newFolder');
+            if (Get.previousRoute == 'intro' ||
+                Get.previousRoute == 'home' ||
+                Get.previousRoute == 'menu') {
+              Get.toNamed('newFolder');
+            } else {
+              Get.offNamed('newFolder');
+            }
           } else if (value == 2) {
-            Get.toNamed('search');
+            if (Get.previousRoute == 'intro' ||
+                Get.previousRoute == 'home' ||
+                Get.previousRoute == 'menu') {
+              Get.toNamed('search');
+            } else {
+              Get.offNamed('search');
+            }
           }
         },
         backgroundColor: Colors.indigo.shade100,
         selectedItemColor: Colors.indigoAccent,
-        //unselectedItemColor: Colors.white54,
         items: [
           BottomNavigationBarItem(
             icon: Icon(FontAwesomeIcons.home),

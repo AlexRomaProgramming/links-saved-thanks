@@ -8,6 +8,8 @@ class StorageController extends GetxController {
   var bottomBarIndex = 0.obs; //which bottom bar item is activated
   var folderList = <String>[].obs; //list of all existing folders
   var searchHistoryList = <String>[].obs; //search history list
+  var isFromOutside = true.obs; //if app begins with cardPage or with menuPage
+  var newFolderName = ''.obs; //name of ricent created folder, -> animated list
 
   @override
   onInit() {
@@ -30,9 +32,11 @@ class StorageController extends GetxController {
     ever(allLinks, (_) {
       GetStorage('Data').write('allLinksList', allLinks.toList());
     });
+    //Every time list changes rewrite in storage
     ever(folderList, (_) {
       GetStorage('Data').write('allFolders', folderList);
     });
+    //Every time history updated rewrite it
     ever(searchHistoryList, (_) {
       GetStorage('Data').write('historyList', searchHistoryList);
     });

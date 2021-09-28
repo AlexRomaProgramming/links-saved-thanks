@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:links_saved_thanks/controllers/storage_controller.dart';
+import 'package:links_saved_thanks/pages/card_page.dart';
 
 import 'package:links_saved_thanks/pages/home_page.dart';
 import 'package:links_saved_thanks/pages/folder_page.dart';
@@ -20,6 +22,7 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
+  final StorageController storageController = Get.put(StorageController());
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(

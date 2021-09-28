@@ -20,6 +20,7 @@ class MenuPage extends StatefulWidget {
 class _MenuPageState extends State<MenuPage>
     with AutomaticKeepAliveClientMixin {
   late TextEditingController _controller;
+  late ScrollController _scrollController;
   final StorageController storageController = Get.find();
   final GlobalKey<AnimatedListState> listKey = GlobalKey<AnimatedListState>();
 
@@ -27,11 +28,17 @@ class _MenuPageState extends State<MenuPage>
   void initState() {
     super.initState();
     _controller = TextEditingController();
+    _scrollController = ScrollController();
+    //Every time we have new folder we will insert it in the list
+    storageController.newFolderName.listen((value) {
+      if (mounted) _insertListItem(value);
+    });
   }
 
   @override
   void dispose() {
     _controller.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -50,6 +57,7 @@ class _MenuPageState extends State<MenuPage>
               child: SlidableNotificationListener(
             child: AnimatedList(
               key: listKey,
+              controller: _scrollController,
               physics: BouncingScrollPhysics(),
               initialItemCount: storageController.folderList.length,
               itemBuilder: (context, index, animation) {
@@ -72,7 +80,7 @@ class _MenuPageState extends State<MenuPage>
   @override
   bool get wantKeepAlive => true;
 
-  //animation of list item when deleted
+  //animation of list item when deleted or inserted
   Widget _animatedItem(BuildContext context, int index, animation, String text,
       List<LinkInfoModel> listOfCategory) {
     return SizeTransition(
@@ -191,7 +199,7 @@ class _MenuPageState extends State<MenuPage>
 
   void _confirmNewFolderName(int index, String foldersName) {
     if (_controller.text.trim() == '') {
-      Get.back();
+      Get.back(); //from dialog
 
       buildSimpleSnackbar(
           'Error',
@@ -265,6 +273,12 @@ class _MenuPageState extends State<MenuPage>
         storageController.allLinks.removeAt(position);
       });
     }
-    //setState(() {});
+  }
+
+  _insertListItem(String folderName) {
+    listKey.currentState!
+        .insertItem(0, duration: const Duration(milliseconds: 500));
+
+    storageController.folderList.insert(0, folderName);
   }
 }

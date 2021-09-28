@@ -56,9 +56,7 @@ class _NewFolderPageState extends State<NewFolderPage> {
                             color: Colors.white,
                             fontWeight: FontWeight.w700,
                             fontSize: 22),
-                        //textAlign: TextAlign.center,
                         enabled: textFieldEnabled,
-                        //autofocus: true,
                         controller: _controller,
                         onSubmitted: (value) {
                           _saveEdited();
@@ -71,7 +69,6 @@ class _NewFolderPageState extends State<NewFolderPage> {
                               FontAwesomeIcons.folderOpen,
                               color: Colors.white38,
                             ),
-                            //labelText: 'New folder',
                             hintText: 'Enter folder name...',
                             hintStyle:
                                 TextStyle(color: Colors.white38, fontSize: 22),
@@ -117,9 +114,15 @@ class _NewFolderPageState extends State<NewFolderPage> {
                 color: Colors.deepOrangeAccent.shade400),
             false);
       } else if (!storageController.folderList.contains(_controller.text)) {
-        storageController.folderList.add(_controller.text.trim());
+        storageController.newFolderName.value = _controller.text.trim();
         storageController.bottomBarIndex.value = 0;
-        Get.toNamed('menu');
+
+        if (storageController.isFromOutside.value) {
+          Get.until((route) => Get.currentRoute == 'menu');
+        } else {
+          Get.until((route) => Get.currentRoute == 'home');
+        }
+
         _buildSnackbar(
             _controller.text,
             'This folder was added to the list',
@@ -165,7 +168,7 @@ class _NewFolderPageState extends State<NewFolderPage> {
             textFieldEnabled = false;
           });
         }
-        if (status == SnackbarStatus.CLOSED) {
+        if (status == SnackbarStatus.CLOSED && this.mounted) {
           setState(() {
             textFieldEnabled = true;
           });

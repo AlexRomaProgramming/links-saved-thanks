@@ -1,6 +1,8 @@
-import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
+
+import 'package:animate_do/animate_do.dart';
 import 'package:get/get.dart';
+
 import 'package:links_saved_thanks/widgets/folder_list_item.dart';
 
 class LineOfFolders extends StatelessWidget {

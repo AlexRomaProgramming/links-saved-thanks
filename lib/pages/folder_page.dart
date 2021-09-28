@@ -10,8 +10,9 @@ import 'package:links_saved_thanks/widgets/links_list_view.dart';
 
 class FolderPage extends StatelessWidget {
   //name of folder come with arguments from previous page
-  final String folderName = Get.arguments[0];
-  final String searchedLinkTitle = Get.arguments[1];
+  final String folderName = Get.arguments[0]; //folder name
+  final String searchedLinkTitle =
+      Get.arguments[1]; //if is from search - title of searched link
   final StorageController storageController = Get.find();
   @override
   Widget build(BuildContext context) {
@@ -35,7 +36,9 @@ class FolderPage extends StatelessWidget {
                     children: [
                       IconButton(
                           onPressed: () {
-                            Get.toNamed('menu');
+                            Get.until((route) =>
+                                Get.currentRoute == 'menu' ||
+                                Get.currentRoute == 'home');
                             storageController.bottomBarIndex.value = 0;
                           },
                           icon: Icon(

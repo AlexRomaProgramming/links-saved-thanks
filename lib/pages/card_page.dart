@@ -1,32 +1,30 @@
-import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 import 'package:get/get.dart';
+import 'package:animate_do/animate_do.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 import 'package:links_saved_thanks/controllers/storage_controller.dart';
 import 'package:links_saved_thanks/helpers/functions.dart';
 import 'package:links_saved_thanks/models/link_info_model.dart';
-
 import 'package:links_saved_thanks/widgets/background.dart';
-
 import 'package:links_saved_thanks/widgets/line_of_folders.dart';
 import 'package:links_saved_thanks/widgets/linkCard.dart';
 
 class CardPage extends StatefulWidget {
-  const CardPage({
-    Key? key,
-    required String? sharedText,
-    required this.storageController,
-  })  : _sharedText = sharedText,
+  const CardPage({Key? key, required String? sharedText})
+      : _sharedText = sharedText,
         super(key: key);
 
   final String? _sharedText;
-  final StorageController storageController;
 
   @override
   State<CardPage> createState() => _CardPageState();
 }
 
 class _CardPageState extends State<CardPage> {
+  final StorageController storageController = Get.find();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,10 +41,9 @@ class _CardPageState extends State<CardPage> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       GestureDetector(
-                        //TODO: When you go to create new folder and return with back button here new folder don't appear
                         onTap: () {
-                          widget.storageController.bottomBarIndex.value = 0;
-                          Get.toNamed('menu')?.then((value) {
+                          storageController.bottomBarIndex.value = 0;
+                          Get.toNamed('menu')!.then((value) {
                             setState(() {});
                           });
                         },
@@ -62,11 +59,8 @@ class _CardPageState extends State<CardPage> {
                           ),
                         ),
                       ),
-                      //TODO: When i remove a folder and go back to card page
-                      //(with back button) deleted folder is visible in this list
-                      //tips: use Get.offNamed() instead of Get.toNamed()
-                      LineOfFolders(
-                          folderList: widget.storageController.folderList),
+
+                      LineOfFolders(folderList: storageController.folderList),
                       FadeInUp(
                         child: Icon(FontAwesomeIcons.arrowUp,
                             size: 80, color: Colors.white.withOpacity(0.3)),

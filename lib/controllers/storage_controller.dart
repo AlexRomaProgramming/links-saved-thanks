@@ -10,6 +10,7 @@ class StorageController extends GetxController {
   var searchHistoryList = <String>[].obs; //search history list
   var isFromOutside = true.obs; //if app begins with cardPage or with menuPage
   var newFolderName = ''.obs; //name of ricent created folder, -> animated list
+  var isInternetConnected = true.obs; //for check the internet connection
 
   @override
   onInit() {
@@ -60,11 +61,9 @@ class StorageController extends GetxController {
   //when close app passing LinkInfoModels to json and save it
   @override
   void onClose() {
-    //TODO: separate storage for allLinks list
     var listToSave = allLinks.map((element) => element.toJson()).toList();
     GetStorage('Data').write('allLinksList', listToSave.toList());
-    //GetStorage('Data').write('allFolders', folderList.toList());
+
     super.onClose();
   }
-  //TODO: when app exits with Back button remember where for restart
 }

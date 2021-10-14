@@ -4,12 +4,15 @@ import 'package:flutter/material.dart';
 
 import 'package:animate_do/animate_do.dart';
 import 'package:get/get.dart';
+import 'package:links_saved_thanks/controllers/storage_controller.dart';
+import 'package:links_saved_thanks/helpers/functions.dart';
 
 import 'package:links_saved_thanks/models/link_info_model.dart';
 
 class LinkCard extends StatelessWidget {
   //Object which contains data
   final LinkInfoModel? dataFetched;
+  final StorageController storageController = Get.find();
 
   LinkCard({Key? key, this.dataFetched}) : super(key: key); //constructor
 
@@ -29,15 +32,7 @@ class LinkCard extends StatelessWidget {
           child: Stack(
             alignment: Alignment.bottomCenter,
             children: [
-              if (dataFetched!.image == 'no_image')
-                Image.asset('assets/img/no-image.png',
-                    width: double.infinity, fit: BoxFit.cover)
-              else
-                FadeInImage.assetNetwork(
-                    height: Get.height * 0.36,
-                    fit: BoxFit.cover,
-                    placeholder: 'assets/img/jar-loading.gif',
-                    image: dataFetched!.image),
+              Align(child: imageToShow(dataFetched!.image, storageController)),
               FadeIn(
                   delay: Duration(milliseconds: 1000),
                   duration: Duration(milliseconds: 1000),

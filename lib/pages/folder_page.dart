@@ -37,8 +37,8 @@ class FolderPage extends StatelessWidget {
                       IconButton(
                           onPressed: () {
                             Get.until((route) =>
-                                Get.currentRoute == 'menu' ||
-                                Get.currentRoute == 'home');
+                                Get.currentRoute == '/menu' ||
+                                Get.currentRoute == '/home');
                             storageController.bottomBarIndex.value = 0;
                           },
                           icon: Icon(

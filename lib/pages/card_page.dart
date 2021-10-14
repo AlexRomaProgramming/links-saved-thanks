@@ -7,6 +7,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:links_saved_thanks/controllers/storage_controller.dart';
 import 'package:links_saved_thanks/helpers/functions.dart';
 import 'package:links_saved_thanks/models/link_info_model.dart';
+import 'package:links_saved_thanks/pages/error_page.dart';
 import 'package:links_saved_thanks/widgets/background.dart';
 import 'package:links_saved_thanks/widgets/line_of_folders.dart';
 import 'package:links_saved_thanks/widgets/linkCard.dart';
@@ -43,7 +44,7 @@ class _CardPageState extends State<CardPage> {
                       GestureDetector(
                         onTap: () {
                           storageController.bottomBarIndex.value = 0;
-                          Get.toNamed('menu')!.then((value) {
+                          Get.toNamed('/menu')!.then((value) {
                             setState(() {});
                           });
                         },
@@ -77,19 +78,10 @@ class _CardPageState extends State<CardPage> {
                           feedback: ClipRRect(
                             borderRadius: BorderRadius.circular(10),
                             child: Container(
-                              height: 100,
-                              width: 150,
-                              child: (snapshot.data!.image == 'no_image')
-                                  ? Image.asset('assets/img/no-image.png',
-                                      width: double.infinity,
-                                      //height: 250,
-                                      fit: BoxFit.cover)
-                                  : FadeInImage.assetNetwork(
-                                      //height: Get.height * 0.36,
-                                      fit: BoxFit.cover,
-                                      placeholder: 'assets/img/jar-loading.gif',
-                                      image: snapshot.data!.image),
-                            ),
+                                height: 100,
+                                width: 150,
+                                child: imageToShow(
+                                    snapshot.data!.image, storageController)),
                           ),
                           child: LinkCard(dataFetched: snapshot.data)),
 
@@ -100,8 +92,7 @@ class _CardPageState extends State<CardPage> {
               ],
             );
           } else if (snapshot.hasError) {
-            //TODO: do something with it
-            return Center(child: Text('Snapshot has error !!!'));
+            return ErrorPage();
           } else {
             return Center(
                 child:

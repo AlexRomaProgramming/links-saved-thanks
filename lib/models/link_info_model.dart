@@ -9,7 +9,7 @@ class LinkInfoModel {
   LinkInfoModel({
     this.url = '',
     this.title = '',
-    this.description = '',
+    //this.description = '',
     this.image = '',
     required this.folder,
     required this.date,
@@ -17,7 +17,7 @@ class LinkInfoModel {
 
   String url;
   String title;
-  String description;
+  //String description;
   String image;
   List<String> folder = [];
   DateTime date;
@@ -25,7 +25,7 @@ class LinkInfoModel {
   factory LinkInfoModel.fromJson(Map<String, dynamic> json) => LinkInfoModel(
         url: json["url"],
         title: json["title"],
-        description: json["description"],
+        //description: json["description"],
         image: json["image"],
         folder: List<String>.from(json["folder"].map((x) => x)),
         date: DateTime.parse(json["date"]),
@@ -34,7 +34,7 @@ class LinkInfoModel {
   Map<String, dynamic> toJson() => {
         "url": url,
         "title": title,
-        "description": description,
+        //"description": description,
         "image": image,
         "folder": List<dynamic>.from(folder.map((x) => x)),
         "date": date.toIso8601String(),

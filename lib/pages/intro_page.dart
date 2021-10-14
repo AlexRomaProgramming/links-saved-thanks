@@ -32,7 +32,7 @@ class _IntroPageState extends State<IntroPage> with TickerProviderStateMixin {
         .then(
           (value) => Future.delayed(Duration(seconds: 1)).then(
             (value) => _lottieAnimation.forward().then(
-                  (value) => Get.offAllNamed('home'),
+                  (value) => Get.offAllNamed('/home'),
                 ),
           ),
         );

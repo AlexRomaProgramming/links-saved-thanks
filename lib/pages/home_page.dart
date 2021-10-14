@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -14,9 +15,10 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   final StorageController storageController = Get.find();
   late StreamSubscription _intentDataStreamSubscription;
+  late StreamSubscription _internetConnectionSubscription;
   String? _sharedText;
 
   @override
@@ -28,28 +30,54 @@ class _HomePageState extends State<HomePage> {
         ReceiveSharingIntent.getTextStream().listen((String value) {
       setState(() {
         _sharedText = value;
-        print("Shared when in memory: $_sharedText");
+
         //return to home page, its a bottom of the Stack
-        Get.until((route) => Get.currentRoute == 'home');
+        Get.until((route) => Get.currentRoute == '/home');
       });
     }, onError: (err) {
-      print("getLinkStream error: $err");
+      Get.toNamed('/error');
     });
 
     // For sharing or opening urls/text coming from outside the app while the app is closed
     ReceiveSharingIntent.getInitialText().then((String? value) {
       setState(() {
         _sharedText = value;
-
-        print("Shared from cold: $_sharedText");
       });
+    });
+
+    _internetConnectionSubscription = Connectivity()
+        .onConnectivityChanged
+        .listen((ConnectivityResult result) {
+      if (result == ConnectivityResult.wifi ||
+          result == ConnectivityResult.mobile) {
+        storageController.isInternetConnected.value = true;
+      } else {
+        storageController.isInternetConnected.value = false;
+      }
     });
   }
 
   @override
   void dispose() {
     _intentDataStreamSubscription.cancel();
+    _internetConnectionSubscription.cancel();
     super.dispose();
+  }
+
+  @override
+  //method equivalent to onResume() of Android
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
+    if (state == AppLifecycleState.resumed) {
+      //check the connectivity
+      var connectivityResult = await (Connectivity().checkConnectivity());
+      //true if we have connection, false if not
+      if (connectivityResult == ConnectivityResult.wifi ||
+          connectivityResult == ConnectivityResult.mobile) {
+        storageController.isInternetConnected.value = true;
+      } else {
+        storageController.isInternetConnected.value = false;
+      }
+    }
   }
 
   @override

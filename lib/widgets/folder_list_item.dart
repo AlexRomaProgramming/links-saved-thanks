@@ -15,7 +15,7 @@ class FolderListItem extends StatelessWidget {
     final StorageController storageController = Get.find();
     return GestureDetector(
       onTap: () =>
-          Get.toNamed('folder', arguments: [text, '+not*from#search+']),
+          Get.toNamed('/folder', arguments: [text, '+not*from#search+']),
       child: DragTarget<LinkInfoModel>(
         builder: (BuildContext context, List<Object?> candidateData,
             List<dynamic> rejectedData) {
@@ -51,7 +51,7 @@ class FolderListItem extends StatelessWidget {
             //put new datetame, will sort by date in folder page
             storageController.allLinks[positionInList].date = DateTime.now();
           }
-          Get.toNamed('menu');
+          Get.toNamed('/menu');
         },
       ),
     );

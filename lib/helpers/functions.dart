@@ -1,6 +1,10 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart';
 import 'package:http/http.dart' as http;
+
+import 'package:links_saved_thanks/controllers/storage_controller.dart';
 import 'package:links_saved_thanks/models/link_info_model.dart';
 
 //Request to url for title, description, image url data
@@ -11,9 +15,7 @@ Future<LinkInfoModel> fetchLinkInfo(String url) async {
     final document = parse(response.body);
     return _createLinkObjectFromDocument(document, url);
   } else {
-    print('Invalid response from http !!!');
-    //TODO: handle invalid response from http
-    return LinkInfoModel(date: DateTime.now(), folder: []);
+    return LinkInfoModel(date: DateTime.now(), folder: [], image: 'no_image');
   }
 }
 
@@ -22,7 +24,7 @@ LinkInfoModel _createLinkObjectFromDocument(Document document, String linkUrl) {
   //all elements with 'meta' tag
   final metaElements = document.getElementsByTagName('meta');
 
-  var description, title, image;
+  var title, image;
 
   //
   metaElements.forEach((element) {
@@ -31,17 +33,17 @@ LinkInfoModel _createLinkObjectFromDocument(Document document, String linkUrl) {
       title = element.attributes['content'];
     }
 
-    //fetch description from og
-    if (element.attributes['property'] == 'og:description') {
-      description = element.attributes['content'];
-    }
-    //if description from og is empty then fetch normal description.
-    if (description == null || description.isEmpty) {
-      //fetch base title
-      if (element.attributes['name'] == 'description') {
-        description = element.attributes['content'];
-      }
-    }
+    // //fetch description from og
+    // if (element.attributes['property'] == 'og:description') {
+    //   description = element.attributes['content'];
+    // }
+    // //if description from og is empty then fetch normal description.
+    // if (description == null || description.isEmpty) {
+    //   //fetch base title
+    //   if (element.attributes['name'] == 'description') {
+    //     description = element.attributes['content'];
+    //   }
+    // }
 
     //fetch image
     if (element.attributes['property'] == 'og:image') {
@@ -85,7 +87,7 @@ LinkInfoModel _createLinkObjectFromDocument(Document document, String linkUrl) {
       url: linkUrl,
       date: DateTime.now(),
       title: title ?? '',
-      description: description ?? '',
+      //description: description ?? '',
       image: image ?? 'no_image',
       folder: []);
 
@@ -98,5 +100,36 @@ bool _isUrl(String? url) {
     return true;
   } else {
     return false;
+  }
+}
+
+Widget imageToShow(String imageUrl, StorageController storageController) {
+  if (!storageController.isInternetConnected.value) {
+    return Image.asset('assets/img/no-image.png',
+        width: double.infinity,
+        //height: 250,
+        fit: BoxFit.cover);
+  } else if (imageUrl.toLowerCase().endsWith('.svg') && _isUrl(imageUrl)) {
+    return SvgPicture.network(
+      imageUrl,
+      height: double.infinity,
+      width: double.infinity,
+      placeholderBuilder: (context) => Image.asset(
+        'assets/img/jar-loading.gif',
+        width: double.infinity,
+        fit: BoxFit.cover,
+      ),
+    );
+  } else if (_isUrl(imageUrl)) {
+    return FadeInImage.assetNetwork(
+        height: double.infinity,
+        fit: BoxFit.cover,
+        placeholder: 'assets/img/jar-loading.gif',
+        image: imageUrl);
+  } else {
+    return Image.asset('assets/img/no-image.png',
+        width: double.infinity,
+        //height: 250,
+        fit: BoxFit.cover);
   }
 }

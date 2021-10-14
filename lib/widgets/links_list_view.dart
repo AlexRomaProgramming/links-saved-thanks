@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:links_saved_thanks/helpers/functions.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:links_saved_thanks/controllers/storage_controller.dart';
@@ -68,7 +69,6 @@ class _LinksListViewState extends State<LinksListView>
       //controller without scroll offset
       _scrollController = ScrollController();
     }
-    print('LinksListView ${widget.folderName}');
 
     return FadeIn(
       delay: Duration(milliseconds: 500),
@@ -179,18 +179,10 @@ class _LinksListViewState extends State<LinksListView>
           ClipRRect(
             borderRadius: BorderRadius.only(topRight: Radius.circular(30)),
             child: Container(
+                height: Get.height * 0.3,
                 color: Colors.grey.shade400,
                 alignment: Alignment.center,
-                child: (linkModel.image == 'no_image')
-                    ? Image.asset('assets/img/no-image.png',
-                        width: double.infinity,
-                        height: Get.height * 0.33,
-                        fit: BoxFit.cover)
-                    : FadeInImage.assetNetwork(
-                        height: Get.height * 0.33,
-                        fit: BoxFit.cover,
-                        placeholder: 'assets/img/jar-loading.gif',
-                        image: linkModel.image)),
+                child: imageToShow(linkModel.image, storageController)),
           ),
           Container(
             height: Get.height * 0.08,

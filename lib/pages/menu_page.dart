@@ -8,6 +8,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:links_saved_thanks/controllers/storage_controller.dart';
 import 'package:links_saved_thanks/helpers/build_snackbar.dart';
+import 'package:links_saved_thanks/helpers/functions.dart';
 import 'package:links_saved_thanks/models/link_info_model.dart';
 import 'package:links_saved_thanks/widgets/background.dart';
 import 'package:links_saved_thanks/widgets/bottom_bar.dart';
@@ -158,17 +159,12 @@ class _MenuPageState extends State<MenuPage>
           leading: Container(
               width: Get.width * 0.2,
               height: double.infinity,
-              child: (listOfCategory.isEmpty ||
-                      listOfCategory.last.image == 'no_image')
+              child: listOfCategory.isEmpty
                   ? Image.asset('assets/img/no-image.png',
                       width: double.infinity,
-                      //height: Get.height * 0.18,
+                      //height: 250,
                       fit: BoxFit.cover)
-                  : FadeInImage.assetNetwork(
-                      //height: Get.height * 0.36,
-                      fit: BoxFit.cover,
-                      placeholder: 'assets/img/jar-loading.gif',
-                      image: listOfCategory.last.image)),
+                  : imageToShow(listOfCategory.last.image, storageController)),
           title: Text(
             text,
             maxLines: 2,
@@ -191,7 +187,7 @@ class _MenuPageState extends State<MenuPage>
             ],
           ),
           onTap: () =>
-              Get.toNamed('folder', arguments: [text, '+not*from#search+']),
+              Get.toNamed('/folder', arguments: [text, '+not*from#search+']),
         ),
       ),
     );

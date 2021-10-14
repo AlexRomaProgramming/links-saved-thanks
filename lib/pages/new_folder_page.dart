@@ -118,9 +118,9 @@ class _NewFolderPageState extends State<NewFolderPage> {
         storageController.bottomBarIndex.value = 0;
 
         if (storageController.isFromOutside.value) {
-          Get.until((route) => Get.currentRoute == 'menu');
+          Get.until((route) => Get.currentRoute == '/menu');
         } else {
-          Get.until((route) => Get.currentRoute == 'home');
+          Get.until((route) => Get.currentRoute == '/home');
         }
 
         _buildSnackbar(

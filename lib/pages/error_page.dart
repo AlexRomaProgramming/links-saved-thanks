@@ -37,7 +37,7 @@ class ErrorPage extends StatelessWidget {
                 ),
               ),
               Text(
-                'Something went wrong...',
+                'Something went wrong...'.tr,
                 style: TextStyle(color: Colors.white70, fontSize: 28),
               ),
               SizedBox(

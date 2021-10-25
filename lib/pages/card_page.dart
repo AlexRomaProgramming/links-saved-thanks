@@ -67,7 +67,7 @@ class _CardPageState extends State<CardPage> {
                             size: 80, color: Colors.white.withOpacity(0.3)),
                       ),
                       Text(
-                        'Drag and drop the card',
+                        'Drag and drop'.tr,
                         style: TextStyle(
                             fontSize: 18, color: Colors.white.withOpacity(0.5)),
                       ),

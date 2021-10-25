@@ -66,4 +66,6 @@ class StorageController extends GetxController {
 
     super.onClose();
   }
+  //TODO: create layout for big screen
+  //TODO: check the language change with resumed app
 }

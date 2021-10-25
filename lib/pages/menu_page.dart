@@ -107,11 +107,11 @@ class _MenuPageState extends State<MenuPage>
                 backgroundColor: Colors.limeAccent.shade700,
                 foregroundColor: Colors.black54,
                 icon: FontAwesomeIcons.edit,
-                label: 'Edit',
+                label: 'Edit'.tr,
                 onPressed: (context) {
                   _controller.text = text;
                   Get.defaultDialog(
-                    title: 'Enter new folder name',
+                    title: 'Enter new name'.tr,
                     titleStyle: TextStyle(color: Colors.indigo.shade900),
                     backgroundColor: Colors.indigo.shade100,
                     buttonColor: Colors.indigo.shade900,
@@ -128,8 +128,8 @@ class _MenuPageState extends State<MenuPage>
                         _confirmNewFolderName(index, text);
                       },
                     ),
-                    textConfirm: 'Confirm',
-                    textCancel: 'Cancel',
+                    textConfirm: 'Confirm'.tr,
+                    textCancel: 'Cancel'.tr,
                     onCancel: () {
                       _controller.clear();
                     },
@@ -149,7 +149,7 @@ class _MenuPageState extends State<MenuPage>
                 backgroundColor: Colors.deepOrangeAccent.shade400,
                 foregroundColor: Colors.black54,
                 icon: FontAwesomeIcons.trashAlt,
-                label: 'Delete',
+                label: 'Delete'.tr,
                 onPressed: (context) {
                   _deleteFolder(text, index, listOfCategory);
                 },
@@ -198,8 +198,8 @@ class _MenuPageState extends State<MenuPage>
       Get.back(); //from dialog
 
       buildSimpleSnackbar(
-          'Error',
-          'Enter at least one character',
+          'Error'.tr,
+          'Enter at least one character'.tr,
           Icon(FontAwesomeIcons.exclamationCircle,
               color: Colors.deepOrangeAccent.shade400),
           false);
@@ -221,14 +221,14 @@ class _MenuPageState extends State<MenuPage>
       Get.back();
       buildSimpleSnackbar(
           newName,
-          'New folder name was created',
+          'Folder name has been changed'.tr,
           Icon(FontAwesomeIcons.checkCircle, color: Colors.limeAccent.shade700),
           true);
     } else {
       Get.back();
       buildSimpleSnackbar(
-          'Error',
-          'The folder with this name already exists',
+          'Error'.tr,
+          'The folder with this name already exists'.tr,
           Icon(FontAwesomeIcons.exclamationCircle,
               color: Colors.deepOrangeAccent.shade400),
           false);

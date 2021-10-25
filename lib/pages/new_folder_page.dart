@@ -69,7 +69,7 @@ class _NewFolderPageState extends State<NewFolderPage> {
                               FontAwesomeIcons.folderOpen,
                               color: Colors.white38,
                             ),
-                            hintText: 'Enter folder name...',
+                            hintText: 'Enter folder name...'.tr,
                             hintStyle:
                                 TextStyle(color: Colors.white38, fontSize: 22),
                             border: OutlineInputBorder(
@@ -87,7 +87,7 @@ class _NewFolderPageState extends State<NewFolderPage> {
                             color: Colors.indigo.shade900,
                           ),
                           label: Text(
-                            'Save',
+                            'Save'.tr,
                             style: TextStyle(
                                 fontSize: 22, color: Colors.indigo.shade900),
                           ))
@@ -108,8 +108,8 @@ class _NewFolderPageState extends State<NewFolderPage> {
     if (!Get.isSnackbarOpen!) {
       if (_controller.text.trim() == '') {
         _buildSnackbar(
-            'Error',
-            'Enter at least one character',
+            'Error'.tr,
+            'Enter at least one character'.tr,
             Icon(FontAwesomeIcons.exclamationCircle,
                 color: Colors.deepOrangeAccent.shade400),
             false);
@@ -125,14 +125,14 @@ class _NewFolderPageState extends State<NewFolderPage> {
 
         _buildSnackbar(
             _controller.text,
-            'This folder was added to the list',
+            'This folder has been added to the list'.tr,
             Icon(FontAwesomeIcons.checkCircle,
                 color: Colors.limeAccent.shade700),
             true);
       } else {
         _buildSnackbar(
-            'Error',
-            'The folder with this name already exists',
+            'Error'.tr,
+            'The folder with this name already exists'.tr,
             Icon(FontAwesomeIcons.exclamationCircle,
                 color: Colors.deepOrangeAccent.shade400),
             false);

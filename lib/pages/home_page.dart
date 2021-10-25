@@ -97,15 +97,15 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   Future<bool> _backButtonOverride() async {
     bool wantExit = false;
     await Get.defaultDialog(
-      title: 'Do you want to exit the app?',
+      title: 'Do you want to exit the app?'.tr,
       content: Container(),
       titleStyle: TextStyle(color: Colors.indigo.shade900),
       backgroundColor: Colors.indigo.shade100,
       buttonColor: Colors.indigo.shade900,
       confirmTextColor: Colors.white,
       cancelTextColor: Colors.indigo.shade900,
-      textConfirm: 'Yes',
-      textCancel: 'No',
+      textConfirm: 'Yes'.tr,
+      textCancel: 'No'.tr,
       onCancel: () {
         wantExit = false;
       },

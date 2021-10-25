@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 import 'package:links_saved_thanks/controllers/storage_controller.dart';
+import 'package:links_saved_thanks/helpers/translated_strings.dart';
 import 'package:links_saved_thanks/pages/error_page.dart';
 import 'package:links_saved_thanks/pages/home_page.dart';
 import 'package:links_saved_thanks/pages/folder_page.dart';
@@ -59,6 +60,9 @@ class MyApp extends StatelessWidget {
             page: () => ErrorPage(),
             transition: Transition.fadeIn),
       ],
+      locale: Get.deviceLocale,
+      fallbackLocale: Locale('en'),
+      translations: TranslatedStrings(),
     );
   }
 }

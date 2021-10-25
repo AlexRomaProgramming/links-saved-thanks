@@ -81,7 +81,7 @@ class _SearchPageState extends State<SearchPage> {
                     });
                   },
                 ),
-          hintText: 'Search...',
+          hintText: 'Search...'.tr,
           hintStyle: TextStyle(color: Colors.white38, fontSize: 22),
           border: OutlineInputBorder(
               borderSide: BorderSide.none,
@@ -194,10 +194,13 @@ class _SearchPageState extends State<SearchPage> {
       );
     } else {
       return Center(
-          child: Icon(
-        FontAwesomeIcons.question,
-        size: 200,
-        color: Colors.white.withOpacity(0.3),
+          child: FadeIn(
+        duration: Duration(milliseconds: 500),
+        child: Icon(
+          FontAwesomeIcons.question,
+          size: 200,
+          color: Colors.white.withOpacity(0.3),
+        ),
       ));
     }
   }

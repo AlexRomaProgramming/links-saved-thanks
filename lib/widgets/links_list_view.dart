@@ -113,10 +113,10 @@ class _LinksListViewState extends State<LinksListView>
                     backgroundColor: Colors.limeAccent.shade700,
                     foregroundColor: Colors.black54,
                     icon: FontAwesomeIcons.edit,
-                    label: 'Edit',
+                    label: 'Edit'.tr,
                     onPressed: (context) {
                       Get.defaultDialog(
-                        title: 'Enter new title',
+                        title: 'Enter new title'.tr,
                         titleStyle: TextStyle(color: Colors.indigo.shade900),
                         backgroundColor: Colors.indigo.shade100,
                         buttonColor: Colors.indigo.shade900,
@@ -133,8 +133,8 @@ class _LinksListViewState extends State<LinksListView>
                             _confirmNewTitle(index, listofCategory);
                           },
                         ),
-                        textConfirm: 'Confirm',
-                        textCancel: 'Cancel',
+                        textConfirm: 'Confirm'.tr,
+                        textCancel: 'Cancel'.tr,
                         onCancel: () {
                           _controller.clear();
                         },
@@ -154,7 +154,7 @@ class _LinksListViewState extends State<LinksListView>
                     backgroundColor: Colors.deepOrangeAccent.shade400,
                     foregroundColor: Colors.black54,
                     icon: FontAwesomeIcons.trashAlt,
-                    label: 'Delete',
+                    label: 'Delete'.tr,
                     onPressed: (context) {
                       _deleteLink(index, listofCategory);
                     },
@@ -251,8 +251,8 @@ class _LinksListViewState extends State<LinksListView>
       Get.back();
 
       buildSimpleSnackbar(
-          'Error',
-          'Enter at least one character',
+          'Error'.tr,
+          'Enter at least one character'.tr,
           Icon(FontAwesomeIcons.exclamationCircle,
               color: Colors.deepOrangeAccent.shade400),
           false);
@@ -285,14 +285,14 @@ class _LinksListViewState extends State<LinksListView>
       Get.back();
       buildSimpleSnackbar(
           _controller.text,
-          'New title was created',
+          'New title was created'.tr,
           Icon(FontAwesomeIcons.checkCircle, color: Colors.limeAccent.shade700),
           true);
     } else {
       Get.back();
       buildSimpleSnackbar(
-          'Error',
-          'The title already exists',
+          'Error'.tr,
+          'The title already exists'.tr,
           Icon(FontAwesomeIcons.exclamationCircle,
               color: Colors.deepOrangeAccent.shade400),
           false);
@@ -309,8 +309,8 @@ class _LinksListViewState extends State<LinksListView>
       await launch(url);
     } else {
       buildSimpleSnackbar(
-          'Error',
-          'Could not launch this page',
+          'Error'.tr,
+          'Could not launch this page'.tr,
           Icon(FontAwesomeIcons.exclamationCircle,
               color: Colors.deepOrangeAccent.shade400),
           false);

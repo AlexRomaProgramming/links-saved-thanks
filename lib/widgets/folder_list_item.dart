@@ -79,7 +79,8 @@ class ListItemContainer extends StatelessWidget {
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
-              color: highlighted ? Colors.black : Colors.white, fontSize: 16),
+              color: highlighted ? Colors.black : Color(0xFFfff59d),
+              fontSize: 16),
         ),
         padding: EdgeInsets.all(5),
         margin: EdgeInsets.all(10),

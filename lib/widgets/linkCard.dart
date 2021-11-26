@@ -20,10 +20,13 @@ class LinkCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Container(
-        margin: EdgeInsets.all(15),
-        height: Get.height * 0.3,
+        margin: EdgeInsets.all(20),
+        height: Get.height * 0.33,
+        width: MediaQuery.of(context).orientation == Orientation.landscape
+            ? Get.height * 0.5
+            : double.infinity,
         decoration: BoxDecoration(
-            color: Colors.grey[400],
+            color: Colors.grey.shade400,
             border:
                 Border.all(color: Colors.blueGrey.shade300.withOpacity(0.8)),
             borderRadius: BorderRadius.circular(10)),

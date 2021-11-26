@@ -26,43 +26,47 @@ class MyApp extends StatelessWidget {
   final StorageController storageController = Get.put(StorageController());
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      title: 'Links Saved Thanks',
-      theme: ThemeData(
-          scaffoldBackgroundColor: Colors.indigo.shade200,
-          primaryColor: Colors.indigo.shade900),
-      debugShowCheckedModeBanner: false,
-      initialRoute: '/intro',
-      getPages: [
-        GetPage(name: '/intro', page: () => IntroPage()),
-        GetPage(
-            name: '/home',
-            page: () => HomePage(),
-            transition: Transition.fadeIn),
-        GetPage(
-            name: '/menu',
-            page: () => MenuPage(),
-            transition: Transition.fadeIn),
-        GetPage(
-            name: '/newFolder',
-            page: () => NewFolderPage(),
-            transition: Transition.fadeIn),
-        GetPage(
-            name: '/search',
-            page: () => SearchPage(),
-            transition: Transition.fadeIn),
-        GetPage(
-            name: '/folder',
-            page: () => FolderPage(),
-            transition: Transition.fadeIn),
-        GetPage(
-            name: '/error',
-            page: () => ErrorPage(),
-            transition: Transition.fadeIn),
-      ],
-      locale: Get.deviceLocale,
-      fallbackLocale: Locale('en'),
-      translations: TranslatedStrings(),
+    return GestureDetector(
+      //for dismiss keyboard with click anywhere
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: GetMaterialApp(
+        title: 'Links Saved Thanks',
+        theme: ThemeData(
+            scaffoldBackgroundColor: Colors.indigo.shade200,
+            primaryColor: Colors.indigo.shade900),
+        debugShowCheckedModeBanner: false,
+        initialRoute: '/intro',
+        getPages: [
+          GetPage(name: '/intro', page: () => IntroPage()),
+          GetPage(
+              name: '/home',
+              page: () => HomePage(),
+              transition: Transition.fadeIn),
+          GetPage(
+              name: '/menu',
+              page: () => MenuPage(),
+              transition: Transition.fadeIn),
+          GetPage(
+              name: '/newFolder',
+              page: () => NewFolderPage(),
+              transition: Transition.fadeIn),
+          GetPage(
+              name: '/search',
+              page: () => SearchPage(),
+              transition: Transition.fadeIn),
+          GetPage(
+              name: '/folder',
+              page: () => FolderPage(),
+              transition: Transition.fadeIn),
+          GetPage(
+              name: '/error',
+              page: () => ErrorPage(),
+              transition: Transition.fadeIn),
+        ],
+        locale: Get.deviceLocale,
+        fallbackLocale: Locale('en'),
+        translations: TranslatedStrings(),
+      ),
     );
   }
 }

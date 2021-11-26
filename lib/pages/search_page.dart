@@ -29,23 +29,31 @@ class _SearchPageState extends State<SearchPage> {
     return Scaffold(
       resizeToAvoidBottomInset:
           false, //for avoid resizing of layout with keyboard
-      bottomNavigationBar: BottomBar(storageController: storageController),
+      bottomNavigationBar: BottomBar(),
       body: Stack(children: [
         const BackgroundWidget(),
-        FadeInRight(
-          delay: Duration(milliseconds: 500),
-          duration: Duration(milliseconds: 500),
-          child: SafeArea(
-            child: Container(
-              margin: EdgeInsets.symmetric(horizontal: 10),
-              padding: EdgeInsets.all(15.0),
-              child: Column(
-                children: [_searchTextInput(), _listHistoryOrSuggestions()],
-              ),
-            ),
+        Get.width <= 600
+            ? _searchInputField()
+            : Container(
+                child: _searchInputField(),
+                padding: EdgeInsets.symmetric(horizontal: Get.width * 0.15))
+      ]),
+    );
+  }
+
+  Widget _searchInputField() {
+    return FadeInRight(
+      delay: Duration(milliseconds: 500),
+      duration: Duration(milliseconds: 500),
+      child: SafeArea(
+        child: Container(
+          margin: EdgeInsets.symmetric(horizontal: 10),
+          padding: EdgeInsets.all(15.0),
+          child: Column(
+            children: [_searchTextInput(), _listHistoryOrSuggestions()],
           ),
         ),
-      ]),
+      ),
     );
   }
 
@@ -120,30 +128,7 @@ class _SearchPageState extends State<SearchPage> {
         itemCount: suggestionsList.length,
         physics: BouncingScrollPhysics(),
         itemBuilder: (BuildContext context, int index) {
-          return ListTile(
-            leading: Container(
-                width: Get.width * 0.2,
-                height: double.infinity,
-                child: imageToShow(
-                    suggestionsList[index].image, storageController)),
-            title: Text(
-              suggestionsList[index].title,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(color: Colors.white, fontSize: 18),
-            ),
-            subtitle: Text(suggestionsList[index].folder.toString(),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(color: Colors.white70, fontSize: 14)),
-            onTap: () {
-              _saveToHistory(index);
-              Get.offNamed('/folder', arguments: [
-                suggestionsList[index].folder[0],
-                suggestionsList[index].title
-              ]);
-            },
-          );
+          return _searchListItem(index);
         },
       ),
     );
@@ -164,31 +149,8 @@ class _SearchPageState extends State<SearchPage> {
           itemCount: suggestionsList.length,
           physics: BouncingScrollPhysics(),
           itemBuilder: (BuildContext context, int index) {
-            return ListTile(
-              leading: Container(
-                  width: Get.width * 0.2,
-                  height: double.infinity,
-                  child: imageToShow(
-                      suggestionsList[index].image, storageController)),
-              title: Text(
-                suggestionsList[index].title,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(color: Colors.white, fontSize: 18),
-              ),
-              subtitle: Text(suggestionsList[index].folder.toString(),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(color: Colors.white70, fontSize: 14)),
-              onTap: () {
-                _saveToHistory(index);
-
-                Get.offNamed('/folder', arguments: [
-                  suggestionsList[index].folder[0],
-                  suggestionsList[index].title
-                ]);
-              },
-            );
+            return _searchListItem(index);
+            //  ListTile(
           },
         ),
       );
@@ -203,6 +165,54 @@ class _SearchPageState extends State<SearchPage> {
         ),
       ));
     }
+  }
+
+  Widget _searchListItem(int index) {
+    return GestureDetector(
+      onTap: () {
+        _saveToHistory(index);
+        Get.offNamed('/folder', arguments: [
+          suggestionsList[index].folder[0],
+          suggestionsList[index].title
+        ]);
+        storageController.bottomBarIndex.value = 0;
+      },
+      child: Container(
+        padding: EdgeInsets.all(5),
+        margin: EdgeInsets.symmetric(horizontal: 10),
+        height: MediaQuery.of(context).orientation == Orientation.portrait
+            ? Get.height * 0.1
+            : Get.height * 0.135,
+        child: Row(
+          children: [
+            Container(
+                width: Get.width > 600 ? 150 : Get.width * 0.26,
+                height: double.infinity,
+                child: imageToShow(
+                    suggestionsList[index].image, storageController)),
+            SizedBox(width: 5),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    suggestionsList[index].title,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(color: Colors.white, fontSize: 18),
+                  ),
+                  Text(suggestionsList[index].folder.toString(),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(color: Color(0xFFfff59d), fontSize: 14))
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+    );
   }
 
   void _saveToHistory(int index) {

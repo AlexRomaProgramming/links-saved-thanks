@@ -9,8 +9,11 @@ class StorageController extends GetxController {
   var folderList = <String>[].obs; //list of all existing folders
   var searchHistoryList = <String>[].obs; //search history list
   var isFromOutside = true.obs; //if app begins with cardPage or with menuPage
-  var newFolderName = ''.obs; //name of ricent created folder, -> animated list
+  var newFolderName = ''.obs; //name of newly created folder, -> animated list
   var isInternetConnected = true.obs; //for check the internet connection
+  var triggerMenuRebuild = 0.obs; //with removing link will trigger menu rebuild
+  var triggerCardPageRebuild = 0.obs; //removing folder -> remove from card page
+  var linkWithError = ''.obs; //to avoid bucle of erroPage save error link
 
   @override
   onInit() {
@@ -66,6 +69,4 @@ class StorageController extends GetxController {
 
     super.onClose();
   }
-  //TODO: create layout for big screen
-  //TODO: check the language change with resumed app
 }

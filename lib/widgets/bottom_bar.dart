@@ -6,12 +6,7 @@ import 'package:get/get.dart';
 import 'package:links_saved_thanks/controllers/storage_controller.dart';
 
 class BottomBar extends StatelessWidget {
-  const BottomBar({
-    Key? key,
-    required this.storageController,
-  }) : super(key: key);
-
-  final StorageController storageController;
+  final StorageController storageController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +22,7 @@ class BottomBar extends StatelessWidget {
               } else {
                 Get.until((route) => Get.currentRoute == '/home');
               }
+
               break;
             case 1:
               if (Get.previousRoute == '/intro' ||
@@ -52,9 +48,7 @@ class BottomBar extends StatelessWidget {
         selectedItemColor: Colors.indigoAccent,
         items: [
           BottomNavigationBarItem(
-            icon: Icon(FontAwesomeIcons.home),
-            label: 'Home'.tr,
-          ),
+              icon: Icon(FontAwesomeIcons.home), label: 'Home'.tr),
           BottomNavigationBarItem(
               icon: Icon(FontAwesomeIcons.folder), label: 'New folder'.tr),
           BottomNavigationBarItem(

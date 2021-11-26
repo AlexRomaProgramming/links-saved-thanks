@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -64,7 +63,7 @@ class _LinksListViewState extends State<LinksListView>
       });
       //set searched link up in the scroll
       _scrollController = ScrollController(
-          initialScrollOffset: (Get.height * 0.41 + 20) * indexElement);
+          initialScrollOffset: (Get.height * 0.38 + 20) * indexElement);
     } else {
       //controller without scroll offset
       _scrollController = ScrollController();
@@ -238,6 +237,8 @@ class _LinksListViewState extends State<LinksListView>
         storageController.searchHistoryList.remove(removableLinkTitle);
       }
     });
+    //trigger changes in menu page
+    storageController.triggerMenuRebuild.value++;
   }
 
   void _confirmNewTitle(int index, List<LinkInfoModel> listOfCategory) {

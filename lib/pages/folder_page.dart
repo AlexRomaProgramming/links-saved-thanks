@@ -51,18 +51,34 @@ class FolderPage extends StatelessWidget {
                         child: Text(folderName,
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 22)),
+                            style: TextStyle(
+                                color: Color(0xFFfff59d), fontSize: 22)),
                       ),
-                      Spacer()
+                      Spacer(),
+                      SizedBox(width: 30)
                     ],
                   ),
                 ),
               ),
               Expanded(
-                child: LinksListView(
-                    folderName: folderName,
-                    searchedLinkTitle: searchedLinkTitle),
+                child: Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: Get.width > 600 ? Get.width * 0.16 : 0),
+                    child: Get.height > Get.width
+                        ? LinksListView(
+                            folderName: folderName,
+                            searchedLinkTitle: searchedLinkTitle)
+                        : Row(
+                            children: [
+                              SizedBox(width: Get.width * 0.14),
+                              Expanded(
+                                child: LinksListView(
+                                    folderName: folderName,
+                                    searchedLinkTitle: searchedLinkTitle),
+                              ),
+                              SizedBox(width: Get.width * 0.16)
+                            ],
+                          )),
               )
             ],
           ),

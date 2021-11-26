@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -37,68 +35,76 @@ class _NewFolderPageState extends State<NewFolderPage> {
     return Scaffold(
       resizeToAvoidBottomInset:
           false, //for avoid resizing of layout with keyboard
-      bottomNavigationBar: BottomBar(storageController: storageController),
+      bottomNavigationBar: BottomBar(),
       body: Stack(children: [
         const BackgroundWidget(),
-        FadeInRight(
-          delay: Duration(milliseconds: 500),
-          duration: Duration(milliseconds: 500),
-          child: Column(
-            children: [
-              SafeArea(
-                child: Container(
-                  margin: EdgeInsets.symmetric(horizontal: 10),
-                  padding: EdgeInsets.all(15.0),
-                  child: Column(
-                    children: [
-                      TextField(
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w700,
-                            fontSize: 22),
-                        enabled: textFieldEnabled,
-                        controller: _controller,
-                        onSubmitted: (value) {
-                          _saveEdited();
-                        },
-                        cursorColor: Colors.white,
-                        decoration: InputDecoration(
-                            filled: true,
-                            fillColor: Colors.indigo.shade900,
-                            prefixIcon: Icon(
-                              FontAwesomeIcons.folderOpen,
-                              color: Colors.white38,
-                            ),
-                            hintText: 'Enter folder name...'.tr,
-                            hintStyle:
-                                TextStyle(color: Colors.white38, fontSize: 22),
-                            border: OutlineInputBorder(
-                                borderSide: BorderSide.none,
-                                borderRadius: BorderRadius.circular(30))),
-                      ),
-                      SizedBox(height: 30),
-                      OutlinedButton.icon(
-                          style: OutlinedButton.styleFrom(
-                              side: BorderSide(color: Colors.indigo.shade900),
-                              primary: Colors.limeAccent.shade400),
-                          onPressed: _saveEdited,
-                          icon: Icon(
-                            FontAwesomeIcons.fileDownload,
-                            color: Colors.indigo.shade900,
-                          ),
-                          label: Text(
-                            'Save'.tr,
-                            style: TextStyle(
-                                fontSize: 22, color: Colors.indigo.shade900),
-                          ))
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
+        Get.width <= 600
+            ? _nameInputBlock()
+            : Container(
+                child: _nameInputBlock(),
+                padding: EdgeInsets.symmetric(horizontal: Get.width * 0.15))
       ]),
+    );
+  }
+
+  Widget _nameInputBlock() {
+    return FadeInRight(
+      delay: Duration(milliseconds: 500),
+      duration: Duration(milliseconds: 500),
+      child: Column(
+        children: [
+          SafeArea(
+            child: Container(
+              margin: EdgeInsets.symmetric(horizontal: 10),
+              padding: EdgeInsets.all(15.0),
+              child: Column(
+                children: [
+                  TextField(
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 22),
+                    enabled: textFieldEnabled,
+                    controller: _controller,
+                    onSubmitted: (value) {
+                      _saveEdited();
+                    },
+                    cursorColor: Colors.white,
+                    decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.indigo.shade900,
+                        prefixIcon: Icon(
+                          FontAwesomeIcons.folderOpen,
+                          color: Colors.white38,
+                        ),
+                        hintText: 'Enter folder name...'.tr,
+                        hintStyle:
+                            TextStyle(color: Colors.white38, fontSize: 22),
+                        border: OutlineInputBorder(
+                            borderSide: BorderSide.none,
+                            borderRadius: BorderRadius.circular(30))),
+                  ),
+                  SizedBox(height: 30),
+                  OutlinedButton.icon(
+                      style: OutlinedButton.styleFrom(
+                          side: BorderSide(color: Colors.indigo.shade900),
+                          primary: Colors.limeAccent.shade400),
+                      onPressed: _saveEdited,
+                      icon: Icon(
+                        FontAwesomeIcons.fileDownload,
+                        color: Colors.indigo.shade900,
+                      ),
+                      label: Text(
+                        'Save'.tr,
+                        style: TextStyle(
+                            fontSize: 22, color: Colors.indigo.shade900),
+                      ))
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 

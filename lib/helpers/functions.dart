@@ -103,6 +103,7 @@ bool _isUrl(String? url) {
   }
 }
 
+//return image or  default image
 Widget imageToShow(String imageUrl, StorageController storageController) {
   if (!storageController.isInternetConnected.value) {
     return Image.asset('assets/img/no-image.png',
@@ -115,7 +116,7 @@ Widget imageToShow(String imageUrl, StorageController storageController) {
       height: double.infinity,
       width: double.infinity,
       placeholderBuilder: (context) => Image.asset(
-        'assets/img/jar-loading.gif',
+        'assets/img/giphy.gif',
         width: double.infinity,
         fit: BoxFit.cover,
       ),
@@ -124,7 +125,7 @@ Widget imageToShow(String imageUrl, StorageController storageController) {
     return FadeInImage.assetNetwork(
         height: double.infinity,
         fit: BoxFit.cover,
-        placeholder: 'assets/img/jar-loading.gif',
+        placeholder: 'assets/img/giphy.gif',
         image: imageUrl);
   } else {
     return Image.asset('assets/img/no-image.png',

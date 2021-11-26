@@ -17,7 +17,7 @@ class CardPage extends StatefulWidget {
       : _sharedText = sharedText,
         super(key: key);
 
-  final String? _sharedText;
+  final String? _sharedText; //web site's url
 
   @override
   State<CardPage> createState() => _CardPageState();
@@ -25,6 +25,15 @@ class CardPage extends StatefulWidget {
 
 class _CardPageState extends State<CardPage> {
   final StorageController storageController = Get.find();
+
+  @override
+  void initState() {
+    //listen when a folder is deleted -> rebuild with this information
+    storageController.triggerCardPageRebuild.listen((_) {
+      if (mounted) setState(() {});
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,62 +45,74 @@ class _CardPageState extends State<CardPage> {
             return Stack(
               children: [
                 const BackgroundWidget(),
-                Container(
-                  margin: EdgeInsets.symmetric(vertical: 30),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          storageController.bottomBarIndex.value = 0;
-                          Get.toNamed('/menu')!.then((value) {
-                            setState(() {});
-                          });
-                        },
-                        child: Container(
-                          margin: EdgeInsets.all(15),
-                          child: Row(
-                            children: [
-                              Icon(FontAwesomeIcons.arrowLeft,
-                                  color: Colors.white),
-                              SizedBox(width: 5),
-                              Icon(FontAwesomeIcons.home, color: Colors.white),
-                            ],
+                SingleChildScrollView(
+                  child: Container(
+                    margin: EdgeInsets.symmetric(vertical: 30),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            storageController.bottomBarIndex.value = 0;
+                            Get.toNamed('/menu')!.then((value) {
+                              setState(() {});
+                            });
+                          },
+                          child: Container(
+                            margin: EdgeInsets.all(15),
+                            child: Row(
+                              children: [
+                                Icon(FontAwesomeIcons.arrowLeft,
+                                    color: Colors.white),
+                                SizedBox(width: 5),
+                                Icon(FontAwesomeIcons.home,
+                                    color: Colors.white),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
 
-                      LineOfFolders(folderList: storageController.folderList),
-                      FadeInUp(
-                        child: Icon(FontAwesomeIcons.arrowUp,
-                            size: 80, color: Colors.white.withOpacity(0.3)),
-                      ),
-                      Text(
-                        'Drag and drop'.tr,
-                        style: TextStyle(
-                            fontSize: 18, color: Colors.white.withOpacity(0.5)),
-                      ),
-                      Draggable(
-                          data: snapshot.data,
-                          dragAnchorStrategy: pointerDragAnchorStrategy,
-                          //childWhenDragging: Container(),
-                          feedback: ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: Container(
-                                height: 100,
-                                width: 150,
-                                child: imageToShow(
-                                    snapshot.data!.image, storageController)),
-                          ),
-                          child: LinkCard(dataFetched: snapshot.data)),
+                        LineOfFolders(folderList: storageController.folderList),
+                        FadeInUp(
+                          child: Icon(FontAwesomeIcons.arrowUp,
+                              size: 80, color: Colors.white.withOpacity(0.3)),
+                        ),
+                        Text(
+                          'Drag and drop'.tr,
+                          style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.white.withOpacity(0.5)),
+                        ),
+                        Draggable(
+                            data: snapshot.data,
+                            dragAnchorStrategy: pointerDragAnchorStrategy,
+                            //childWhenDragging: Container(),
+                            feedback: ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: Container(
+                                  height: 100,
+                                  width: 150,
+                                  child: imageToShow(
+                                      snapshot.data!.image, storageController)),
+                            ),
+                            child: Get.width <= 600
+                                ? LinkCard(dataFetched: snapshot.data)
+                                : Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: Get.width * 0.15),
+                                    child:
+                                        LinkCard(dataFetched: snapshot.data))),
 
-                      //Spacer(),
-                    ],
+                        //Spacer(),
+                      ],
+                    ),
                   ),
                 ),
               ],
             );
           } else if (snapshot.hasError) {
+            //recording link that produce the error for avoid the reenter
+            storageController.linkWithError.value = widget._sharedText!;
             return ErrorPage();
           } else {
             return Center(

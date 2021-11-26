@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 
 import 'package:links_saved_thanks/pages/menu_page.dart';
@@ -19,7 +19,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   final StorageController storageController = Get.find();
   late StreamSubscription _intentDataStreamSubscription;
   late StreamSubscription _internetConnectionSubscription;
-  String? _sharedText;
+  String? _sharedText; //url of the shared site
 
   @override
   void initState() {
@@ -30,7 +30,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         ReceiveSharingIntent.getTextStream().listen((String value) {
       setState(() {
         _sharedText = value;
-
         //return to home page, its a bottom of the Stack
         Get.until((route) => Get.currentRoute == '/home');
       });
@@ -82,18 +81,23 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    if (_sharedText != null && _sharedText != '') {
+    //if we have a link and it not return with error -> cardPage
+    if (_sharedText != null &&
+        _sharedText != '' &&
+        _sharedText != storageController.linkWithError.value) {
       storageController.isFromOutside.value = true;
       return WillPopScope(
         onWillPop: _backButtonOverride,
         child: CardPage(sharedText: _sharedText),
       );
     } else {
+      //another way start with menuPage
       storageController.isFromOutside.value = false;
       return WillPopScope(onWillPop: _backButtonOverride, child: MenuPage());
     }
   }
 
+  //back button will open dialog asking if we want close the app
   Future<bool> _backButtonOverride() async {
     bool wantExit = false;
     await Get.defaultDialog(

@@ -105,32 +105,41 @@ bool _isUrl(String? url) {
 
 //return image or  default image
 Widget imageToShow(String imageUrl, StorageController storageController) {
-  if (!storageController.isInternetConnected.value) {
-    return Image.asset('assets/img/no-image.png',
-        width: double.infinity,
-        //height: 250,
-        fit: BoxFit.cover);
-  } else if (imageUrl.toLowerCase().endsWith('.svg') && _isUrl(imageUrl)) {
-    return SvgPicture.network(
-      imageUrl,
-      height: double.infinity,
-      width: double.infinity,
-      placeholderBuilder: (context) => Image.asset(
-        'assets/img/giphy.gif',
-        width: double.infinity,
-        fit: BoxFit.cover,
-      ),
-    );
-  } else if (_isUrl(imageUrl)) {
-    return FadeInImage.assetNetwork(
+  Widget image;
+  try {
+    if (!storageController.isInternetConnected.value) {
+      image = Image.asset('assets/img/no-image.png',
+          width: double.infinity,
+          //height: 250,
+          fit: BoxFit.cover);
+    } else if (imageUrl.toLowerCase().endsWith('.svg') && _isUrl(imageUrl)) {
+      image = SvgPicture.network(
+        imageUrl,
         height: double.infinity,
-        fit: BoxFit.cover,
-        placeholder: 'assets/img/giphy.gif',
-        image: imageUrl);
-  } else {
-    return Image.asset('assets/img/no-image.png',
+        width: double.infinity,
+        placeholderBuilder: (context) => Image.asset(
+          'assets/img/giphy.gif',
+          width: double.infinity,
+          fit: BoxFit.cover,
+        ),
+      );
+    } else if (_isUrl(imageUrl)) {
+      image = FadeInImage.assetNetwork(
+          height: double.infinity,
+          fit: BoxFit.cover,
+          placeholder: 'assets/img/giphy.gif',
+          image: imageUrl);
+    } else {
+      image = Image.asset('assets/img/no-image.png',
+          width: double.infinity,
+          //height: 250,
+          fit: BoxFit.cover);
+    }
+  } catch (_) {
+    image = Image.asset('assets/img/no-image.png',
         width: double.infinity,
         //height: 250,
         fit: BoxFit.cover);
   }
+  return image;
 }

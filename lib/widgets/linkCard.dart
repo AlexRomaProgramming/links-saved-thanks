@@ -21,7 +21,7 @@ class LinkCard extends StatelessWidget {
     return SafeArea(
       child: Container(
         margin: EdgeInsets.all(20),
-        height: Get.height * 0.33,
+        height: Get.height * 0.31,
         width: MediaQuery.of(context).orientation == Orientation.landscape
             ? Get.height * 0.5
             : double.infinity,

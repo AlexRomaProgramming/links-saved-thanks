@@ -1,4 +1,4 @@
-package com.example.links_saved_thanks
+package com.alexroma.links_saved_thanks
 
 import io.flutter.embedding.android.FlutterActivity
 

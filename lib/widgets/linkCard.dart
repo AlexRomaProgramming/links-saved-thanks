@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 
 import 'package:animate_do/animate_do.dart';
 import 'package:get/get.dart';
-import 'package:links_saved_thanks/controllers/storage_controller.dart';
-import 'package:links_saved_thanks/helpers/functions.dart';
 
+import 'package:links_saved_thanks/helpers/functions.dart';
+import 'package:links_saved_thanks/controllers/storage_controller.dart';
 import 'package:links_saved_thanks/models/link_info_model.dart';
 
 class LinkCard extends StatelessWidget {

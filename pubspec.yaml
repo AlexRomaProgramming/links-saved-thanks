@@ -37,7 +37,7 @@ dependencies:
   font_awesome_flutter:
   card_swiper: ^1.0.2
   flutter_slidable: ^1.0.0-dev.9
-  url_launcher: ^6.0.9
+  url_launcher: ^6.0.17
   lottie: ^1.1.0
   flutter_svg: ^0.22.0
   connectivity_plus: any

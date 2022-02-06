@@ -50,7 +50,7 @@ class BottomBar extends StatelessWidget {
           BottomNavigationBarItem(
               icon: Icon(FontAwesomeIcons.home), label: 'Home'.tr),
           BottomNavigationBarItem(
-              icon: Icon(FontAwesomeIcons.folder), label: 'New folder'.tr),
+              icon: Icon(FontAwesomeIcons.plus), label: 'New folder'.tr),
           BottomNavigationBarItem(
               icon: Icon(FontAwesomeIcons.search), label: 'Search'.tr)
         ]);

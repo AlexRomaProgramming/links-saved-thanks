@@ -14,6 +14,7 @@ class StorageController extends GetxController {
   var triggerMenuRebuild = 0.obs; //with removing link will trigger menu rebuild
   var triggerCardPageRebuild = 0.obs; //removing folder -> remove from card page
   var linkWithError = ''.obs; //to avoid bucle of erroPage save error link
+  String defaultFolderName = 'New folder'.tr;
 
   @override
   onInit() {
@@ -24,7 +25,7 @@ class StorageController extends GetxController {
 
     //read list of folders from storage and pass it to RxList
     var folderListAux =
-        GetStorage('Data').read('allFolders') ?? <String>['Default'];
+        GetStorage('Data').read('allFolders') ?? <String>[defaultFolderName];
     folderList = new RxList.from(folderListAux);
 
     //read search history list from storage and pass it to RxList

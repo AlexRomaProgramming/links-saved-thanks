@@ -30,9 +30,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         ReceiveSharingIntent.getTextStream().listen((String value) {
       setState(() {
         _sharedText = value;
-        //return to home page, its a bottom of the Stack
-        Get.until((route) => Get.currentRoute == '/home');
       });
+      //return to home page, its a bottom of the Stack
+      Get.until((route) => Get.currentRoute == '/home');
     }, onError: (err) {
       Get.toNamed('/error');
     });

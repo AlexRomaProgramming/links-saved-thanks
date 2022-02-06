@@ -305,10 +305,9 @@ class _LinksListViewState extends State<LinksListView>
 
   _launchUrl(LinkInfoModel linkModel) async {
     final url = linkModel.url;
-    if (await canLaunch(url)) {
-      //package url_launcher used
-      await launch(url);
-    } else {
+    try {
+      if (!await launch(url)) throw 'Could not launch $url';
+    } catch (e) {
       buildSimpleSnackbar(
           'Error'.tr,
           'Could not launch this page'.tr,
@@ -316,5 +315,17 @@ class _LinksListViewState extends State<LinksListView>
               color: Colors.deepOrangeAccent.shade400),
           false);
     }
+
+    // if (await canLaunch(url)) {
+    //   //package url_launcher used
+    //   await launch(url);
+    // } else {
+    //   buildSimpleSnackbar(
+    //       'Error'.tr,
+    //       'Could not launch this page'.tr,
+    //       Icon(FontAwesomeIcons.exclamationCircle,
+    //           color: Colors.deepOrangeAccent.shade400),
+    //       false);
+    // }
   }
 }
